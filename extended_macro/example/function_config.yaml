@@ -1,0 +1,4 @@
+functions:
+  repeater:                                             # The name which will be used in the GCode to call the function. Must be unique.
+    path: /home/pi/klipper_functions/example.py         # Location of Python script. Must be an absolute path
+    function: repeat_back                               # The actual name of the Python function
