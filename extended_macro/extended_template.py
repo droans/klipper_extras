@@ -93,3 +93,12 @@ def load_config(config):
 LOADERS = {
     ('yaml','yml'): YamlLoader
 }
+
+DEFAULTS = {
+    'math': math,
+    'pandas': pandas,
+    'numpy': numpy,
+    'datetime': datetime,
+    'itertools': itertools,
+    'collections': collections
+}
