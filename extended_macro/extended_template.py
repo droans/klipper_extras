@@ -54,7 +54,13 @@ class LoadYamlFunctions():
             # print(func)
             return func
 
+    def _import_module_dict(self, mods):
+        for mod_name, mod in mods.items():
+            self.Functions[mod_name] = mod
+
     def _import_defaults(self):
+        self._import_module_dict(DEFAULTS)
+
 # Grabs the Klipper config for extended_template,
 # uses the path variable to determine the extension,
 # determines the proper loader for that extension,
