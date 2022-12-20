@@ -31,6 +31,7 @@ class LoadYamlFunctions():
         raise self.Log.Error(dir(config))
         
         self._import_function_dict(func_yaml)
+        self._import_defaults()
 
     # Loops through each item in the config, passes
     # the data off to _import_function which will return
