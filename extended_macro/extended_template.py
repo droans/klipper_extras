@@ -28,7 +28,6 @@ class LoadYamlFunctions():
             self.yaml = yaml.load(f, Loader=yaml.Loader)
         
         func_yaml = self.yaml.get('functions',None)
-        raise self.Log.Error(dir(config))
         
         self._import_function_dict(func_yaml)
         self._import_defaults()
