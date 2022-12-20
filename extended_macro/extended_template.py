@@ -3,6 +3,11 @@ import os, yaml, imp
 
 # Additional defaults for G-Code
 import math, pandas, numpy, datetime, itertools, collections
+
+class Logger():
+    def __init__(self, config):
+        self.Error = config.error
+
 # Wrapper to call the YAML config file loader
 # Allowing users to define loaders so that other config setups can be created. 
 # I'm not going to claim to be the smartest, so I don't want to keep others from creating better options
@@ -17,12 +22,13 @@ class LoadYamlFunctions():
         self.path = yaml_path
         self.Functions = {}
 
-        self.logger = config.get_printer().config_error
+        self.Log = Logger(config)
 
         with open(yaml_path, 'r') as f:
             self.yaml = yaml.load(f, Loader=yaml.Loader)
         
         func_yaml = self.yaml.get('functions',None)
+        raise self.Log.Error(dir(config))
         
         for jinja_name, data in func_yaml.items():
             func = self._import_function(data['path'], data['function'])
@@ -35,7 +41,7 @@ class LoadYamlFunctions():
         module = imp.load_source('script', func_path)
 
         if func_name not in dir(module):
-            self.logger('extended_template: Function %s not found in file %s' % (func_name, func_path))
+            raise self.Log.Error('extended_template: Function %s not found in file %s' % (func_name, func_path))
         else:
             func = getattr(module, func_name)
             # print(func)
@@ -51,7 +57,7 @@ class PythonFunction:
     def __init__(self, config):
         self.printer = config.get_printer()
         self.gcode = self.printer.lookup_object('gcode')
-        self.logger = self.printer.config_error
+        self.Log = Logger(config)
 
         self.config_path = config.get('path')
 
@@ -63,9 +69,9 @@ class PythonFunction:
                 break
 
         if self.functions is None:
-            self.logger.exception('extended_template: Cannot get Python functions from path %s. Is the extension acceptable?' % self.config_path)
+            self.Log.Error('extended_template: Cannot get Python functions from path %s. Is the extension acceptable?' % self.config_path)
         elif not os.path.exists(self.config_path):
-            self.logger.exception('extended_template: Cannot find file %s' % self.config_path)
+            self.Log.Error('extended_template: Cannot find file %s' % self.config_path)
 
 def load_config(config):
     return PythonFunction(config)
