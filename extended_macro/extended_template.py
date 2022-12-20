@@ -30,11 +30,18 @@ class LoadYamlFunctions():
         func_yaml = self.yaml.get('functions',None)
         raise self.Log.Error(dir(config))
         
-        for jinja_name, data in func_yaml.items():
+        self._import_function_dict(func_yaml)
+
+    # Loops through each item in the config, passes
+    # the data off to _import_function which will return
+    # the actual function if it exists, and then adds
+    # each function to the function dictionary so they can 
+    # be added by extended_macro to the Jinja environment
+    def _import_function_dict(self, funcs):
+        for jinja_name, data in funcs.items():
             func = self._import_function(data['path'], data['function'])
             self.Functions[jinja_name] = func
-
-        # self.printer.add_object('extended_config',self)
+        return
 
     # Loads each function 
     def _import_function(self, func_path, func_name):
