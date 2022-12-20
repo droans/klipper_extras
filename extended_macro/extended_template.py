@@ -1,11 +1,17 @@
+# Necessary modules for configuration
 import os, yaml, imp
 
+# Additional defaults for G-Code
 import math, pandas, numpy, datetime, itertools, collections
+# Wrapper to call the YAML config file loader
+# Allowing users to define loaders so that other config setups can be created. 
+# I'm not going to claim to be the smartest, so I don't want to keep others from creating better options
 def YamlLoader(fpath, config):
     y = LoadYamlFunctions(fpath, config)
 
     return y.Functions
 
+# Load YAML config to self.Functions so the template loader can be created
 class LoadYamlFunctions():
     def __init__(self, yaml_path, config):
         self.path = yaml_path
@@ -24,6 +30,7 @@ class LoadYamlFunctions():
 
         # self.printer.add_object('extended_config',self)
 
+    # Loads each function 
     def _import_function(self, func_path, func_name):
         module = imp.load_source('script', func_path)
 
@@ -35,11 +42,11 @@ class LoadYamlFunctions():
             return func
 
     def _import_defaults(self):
-        defaults = {
-            'math': math
-        }
-        
-
+# Grabs the Klipper config for extended_template,
+# uses the path variable to determine the extension,
+# determines the proper loader for that extension,
+# and returns the value from that loader which received
+# the path and the Klipper config object.
 class PythonFunction:
     def __init__(self, config):
         self.printer = config.get_printer()
@@ -63,6 +70,13 @@ class PythonFunction:
 def load_config(config):
     return PythonFunction(config)
 
+# Define loaders as (extension <tuple>): loader <function>
+# 
+# Since different loaders might need or want different methods of parsing the file, 
+# the script expects that the loader is a function, not a class. The function should
+# process the config file and return a dictionary with the jinja function name as the key
+# and the actual Python function as the value
+# 
 LOADERS = {
     ('yaml','yml'): YamlLoader
 }
