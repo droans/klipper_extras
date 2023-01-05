@@ -39,16 +39,8 @@ class Logger():
     def __init__(self, config):
         self.Error = config.error
 
-# Wrapper to call the YAML config file loader
-# Allowing users to define loaders so that other config setups can be created. 
-# I'm not going to claim to be the smartest, so I don't want to keep others from creating better options
-def YamlLoader(fpath, config):
-    y = LoadYamlFunctions(fpath, config)
-
-    return y.Functions
-
 # Load YAML config to self.Functions so the template loader can be created
-class LoadYamlFunctions():
+class YamlLoader():
     def __init__(self, yaml_path, config):
         self.path = yaml_path
         self.Functions = {}
@@ -68,11 +60,15 @@ class LoadYamlFunctions():
     # the actual function if it exists, and then adds
     # each function to the function dictionary so they can 
     # be added by extended_macro to the Jinja environment
+    def GetFunctions(self):
+        return self._funcs
+
     def _import_function_dict(self, funcs):
-        for jinja_name, data in funcs.items():
-            func = self._import_function(data['path'], data['function'])
-            self.Functions[jinja_name] = func
-        return
+        return_funcs = {}
+        for key, val in funcs.items():
+            func = self._import_function(val['path'], val['function'])
+            return_funcs[key] = func
+        return return_funcs
 
     # Loads each function 
     def _import_function(self, func_path, func_name):
@@ -105,17 +101,36 @@ class PythonFunction:
 
         self.config_path = config.get('path')
 
+    def _get_loader(self, ext):
+        loader = None
+        for l in LOADERS:
+            c_ext = l['extensions']
+
+            if type(c_ext) is str:
+                c_ext = [c_ext]
+
+            if ext in l['extensions']:
+                loader = l['func_loader']
+                return loader
+
+        if loader is None:
+            raise self.Log.Error('extended_template: No loader found for extension %s' % ext)
+
+    def _import_user_functions(self):
         ext = self.config_path.split('.')[-1]
+        loader = self._get_loader(ext)
+        funcs, defaults_loaded = self._load_functions(loader, self.config_path)
+        return funcs, defaults_loaded
+
 
         for exts, loader in LOADERS.items():
             if ext in exts:
                 self.functions = loader(self.config_path, config)
                 break
 
-        if self.functions is None:
-            self.Log.Error('extended_template: Cannot get Python functions from path %s. Is the extension acceptable?' % self.config_path)
-        elif not os.path.exists(self.config_path):
-            self.Log.Error('extended_template: Cannot find file %s' % self.config_path)
+    def _insert_function(self, func_name, func):
+        if func_name in self.Functions: 
+            func_name = '_%s' % func_name
 
 def load_config(config):
     return PythonFunction(config)
