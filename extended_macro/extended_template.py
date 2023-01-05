@@ -81,12 +81,22 @@ class YamlLoader():
             # print(func)
             return func
 
-    def _import_module_dict(self, mods):
-        for mod_name, mod in mods.items():
-            self.Functions[mod_name] = mod
+class DefaultLoader:
+    def __init__(self, yaml_path, config):
+        self.DefaultsLoaded = True
+        self.path = yaml_path
+        self.Log = Logger(config)
+        self._funcs = self._load_defaults()
 
-    def _import_defaults(self):
-        self._import_module_dict(DEFAULTS)
+    def _load_defaults(self):
+        def_funcs = {}
+        for name, func in DEFAULTS.items():
+            def_funcs[name] = func
+        return def_funcs
+
+    def GetFunctions(self):
+        return self._funcs
+
 
 # Grabs the Klipper config for extended_template,
 # uses the path variable to determine the extension,
@@ -98,9 +108,35 @@ class PythonFunction:
         self.printer = config.get_printer()
         self.gcode = self.printer.lookup_object('gcode')
         self.Log = Logger(config)
+        self.Functions = self._import()
 
-        self.config_path = config.get('path')
+    def _import(self):
+        defaults_loaded = False
+        if self.config_path is not None:
+            user_funcs, defaults_loaded = self._import_user_functions()
+        else:
+            user_funcs = []
+            defaults_loaded = False
 
+        if not defaults_loaded:
+            default_funcs, defaults_loaded = self._load_defaults()
+
+        all_funcs = {}
+        all_funcs = default_funcs.copy()
+
+        for key, val in user_funcs.items():
+            if key in all_funcs:
+                u_key = '_%s' % key
+            else:
+                u_key = key
+
+            all_funcs[u_key] = val
+
+        print('All Funcs:')
+        print(all_funcs)
+        return all_funcs
+
+        
     def _get_loader(self, ext):
         loader = None
         for l in LOADERS:
@@ -122,11 +158,16 @@ class PythonFunction:
         funcs, defaults_loaded = self._load_functions(loader, self.config_path)
         return funcs, defaults_loaded
 
+    def _load_defaults(self):
+        loader = self._get_loader('default')
+        return self._load_functions(loader)
+        
+    def _load_functions(self, loader, config_path = None):
+        result = loader(config_path, self.config)
+        funcs = result.GetFunctions()
+        defaults_loaded = result.DefaultsLoaded
 
-        for exts, loader in LOADERS.items():
-            if ext in exts:
-                self.functions = loader(self.config_path, config)
-                break
+        return funcs, defaults_loaded
 
     def _insert_function(self, func_name, func):
         if func_name in self.Functions: 
