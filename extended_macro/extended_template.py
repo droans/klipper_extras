@@ -4,6 +4,37 @@ import os, yaml, imp
 # Additional defaults for G-Code
 import math, pandas, numpy, datetime, itertools, collections
 
+# DEFAULTS
+# The default imports to be loaded by extended_template. 
+# These do not need to be defined by the user in their config file
+# If there is a name collision, the default imports will be given priority
+# while the user defined functions are renamed with an underscore.
+# 
+# For example, if the user were to define their own function named `list` (the same name as a default below),
+# the user defined `list` will be renamed to `_list`.
+DEFAULTS = {
+    'math': math,
+    'pandas': pandas,
+    'numpy': numpy,
+    'datetime': datetime,
+    'itertools': itertools,
+    'collections': collections,
+    'dir': dir,
+    'getattr': getattr,
+    'setattr': setattr,
+    'locals': locals,
+    'globals': globals,
+    'list': list,
+    'dict': dict,
+    'set': set,
+    'tuple': tuple,
+    'str': str,
+    'int': int,
+    'float': float,
+    'bool': bool,
+    'type': type,
+}
+
 class Logger():
     def __init__(self, config):
         self.Error = config.error
