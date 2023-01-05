@@ -47,7 +47,7 @@ class ExtendedPrinterGCodeMacro(PrinterGCodeMacro, object):     #Dummy `object` 
 
         config = self.printer.load_object(config, 'extended_template')
 
-        for name, func in config.functions.items():
+        for name, func in config.Functions.items():
             jinja_func = {name:func}
             self.env.globals.update(**jinja_func)
 

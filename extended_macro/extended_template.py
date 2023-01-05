@@ -44,23 +44,20 @@ class YamlLoader():
     def __init__(self, yaml_path, config):
         self.DefaultsLoaded = False
         self.path = yaml_path
-        self.Functions = {}
-
         self.Log = Logger(config)
 
         with open(yaml_path, 'r') as f:
             self.yaml = yaml.load(f, Loader=yaml.Loader)
         
         func_yaml = self.yaml.get('functions',None)
-        
-        self._import_function_dict(func_yaml)
-        self._import_defaults()
+        self._funcs = self._import_function_dict(func_yaml)
 
     # Loops through each item in the config, passes
     # the data off to _import_function which will return
     # the actual function if it exists, and then adds
     # each function to the function dictionary so they can 
     # be added by extended_macro to the Jinja environment
+
     def GetFunctions(self):
         return self._funcs
 
@@ -71,15 +68,12 @@ class YamlLoader():
             return_funcs[key] = func
         return return_funcs
 
-    # Loads each function 
     def _import_function(self, func_path, func_name):
         module = imp.load_source('script', func_path)
-
         if func_name not in dir(module):
             raise self.Log.Error('extended_template: Function %s not found in file %s' % (func_name, func_path))
         else:
             func = getattr(module, func_name)
-            # print(func)
             return func
 
 class DefaultLoader:
@@ -106,9 +100,12 @@ class DefaultLoader:
 # the path and the Klipper config object.
 class PythonFunction:
     def __init__(self, config):
-        self.printer = config.get_printer()
+        self.config = config
+        self.printer = self.config.get_printer()
         self.gcode = self.printer.lookup_object('gcode')
         self.Log = Logger(config)
+        
+        self.config_path = config.get('path', None)
         self.Functions = self._import()
 
     def _import(self):
