@@ -42,6 +42,7 @@ class Logger():
 # Load YAML config to self.Functions so the template loader can be created
 class YamlLoader():
     def __init__(self, yaml_path, config):
+        self.DefaultsLoaded = False
         self.path = yaml_path
         self.Functions = {}
 
