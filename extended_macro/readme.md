@@ -36,7 +36,7 @@ ${KLIPPY_ENV}/pip install -r ${HOME}/requirements.txt
 
 1. Create your Python script(s) with the function(s) you intend to use.
 2. Create a function configuration file using `example/function_config.yaml` as reference. YAML is the allowed schema. The extension must be `yml` or `yaml`
-3. In your Klipper config, add the `[extended_template]` section to define the location of your function config file.
+3. In the `[extended_template]` section of your Klipper config, add the variable `path` with the value being the location of where you saved the config YAML file.
 
 ---
 **Usage:**
