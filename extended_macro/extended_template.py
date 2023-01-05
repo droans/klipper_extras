@@ -135,36 +135,45 @@ class PythonFunction:
 def load_config(config):
     return PythonFunction(config)
 
-# Define loaders as (extension <tuple>): loader <function>
+# LOADERS
+# The definitions in this list will be used to determine the proper loader for the extensions given
 # 
 # Since different loaders might need or want different methods of parsing the file, 
 # the script expects that the loader is a function, not a class. The function should
 # process the config file and return a dictionary with the jinja function name as the key
 # and the actual Python function as the value
 # 
-LOADERS = {
-    ('yaml','yml'): YamlLoader
-}
+# The loader for DEFAULTS should be defined with an extension of ['default']
+# This loader will be ignored if the property loader.DefaultsLoaded property is true (see below)
+# 
+# Definition: {'extensions': <collection_or_string>, 'loader': <class>}
+# 
+# Arguments received: 
+#   * config_path: Path to config set in [extended_template]
+#   * config: Config object received from Klipper
+#
+# Required Properties and Functions:
+#   * loader.DefaultsLoaded <property>: <bool>
+#       - If True, it is assumed the loader has loaded the defaults listed below. 
+#       - If False, assumes the loader has not loaded the defaults listed below.
+#       - It is suggested that the Loader should never process defaults unless:
+#           * The user defines the defaults in the config file
+#           * The loader defines it's own defaults
+#           * Any other scenario where it's better to load the defaults by the loader instead of separately
+#   * loader.GetFunctions(self) <function> = <dict> 
+#       - Loads user-defined functions.
+#           * Optionally, 
+#       - Returns schema: {defined_function_name_for_jinja <str>: function <callable>}
+# 
+# 
+LOADERS = [
+    {
+        'extensions': ['yaml','yml'],
+        'func_loader': YamlLoader
+    },
+    {
+        'extensions': ['default'],
+        'func_loader': DefaultLoader
+    }
+]
 
-DEFAULTS = {
-    'math': math,
-    'pandas': pandas,
-    'numpy': numpy,
-    'datetime': datetime,
-    'itertools': itertools,
-    'collections': collections,
-    'dir': dir,
-    'getattr': getattr,
-    'setattr': setattr,
-    'locals': locals,
-    'globals': globals,
-    'list': list,
-    'dict': dict,
-    'set': set,
-    'tuple': tuple,
-    'str': str,
-    'int': int,
-    'float': float,
-    'bool': bool,
-    'type': type,
-}
