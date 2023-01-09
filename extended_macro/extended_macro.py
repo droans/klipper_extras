@@ -7,6 +7,7 @@
 
 import traceback, logging, ast, copy
 import jinja2
+import jinja2.ext
 import imp
 import os, sys
 from .gcode_macro import (
@@ -50,6 +51,9 @@ class ExtendedPrinterGCodeMacro(PrinterGCodeMacro, object):     #Dummy `object` 
         for name, func in config.Functions.items():
             jinja_func = {name:func}
             self.env.globals.update(**jinja_func)
+
+        self.env.add_extension(jinja2.ext.do)
+        self.env.add_extension(jinja2.ext.loopcontrols)
 
 def load_config(config):
     return ExtendedPrinterGCodeMacro(config)
