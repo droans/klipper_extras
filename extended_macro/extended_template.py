@@ -81,6 +81,7 @@ class DefaultLoader:
         self.DefaultsLoaded = True
         self.path = yaml_path
         self.Log = Logger(config)
+        self.printer = config.printer
         self._funcs = self._load_defaults()
 
     def _load_defaults(self):
