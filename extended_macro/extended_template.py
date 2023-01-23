@@ -3,6 +3,8 @@ import os, yaml, imp
 
 # Additional defaults for G-Code
 import math, pandas, numpy, datetime, itertools, collections
+import flatten_dict.flatten
+import flatten_dict.unflatten
 
 # DEFAULTS
 # The default imports to be loaded by extended_template. 
@@ -85,7 +87,8 @@ class DefaultLoader:
 
         self.custom_defaults = {
             'update_gcode_variable': self.update_gcode_variable,
-            'call_macro': self.call_macro
+            'call_macro': self.call_macro,
+            'update_dict': self.update_dict,
         }
 
         self._funcs = self._load_defaults()
@@ -136,6 +139,28 @@ class DefaultLoader:
         kwparams.update(macro.template.create_template_context())
         kwparams['params'] = params
         macro.template.run_gcode_from_command(kwparams)
+
+    # update_dict 
+    #
+    # Allows for updating a nested dictionary by passing a list, set, or tuple of keys.
+    # If the set of keys do not lead to a valid existing item, the keys will be created.
+    #
+    # Usage:
+    #   d: The dictionary to be updated
+    #   k: A collection of keys to reach the nested key
+    #   v: The new value for the key
+    #
+    # Returns back the dictionary
+    #
+    def update_dict(self, d, k, v):
+        flat = flatten_dict.flatten(d)
+        if type(k) in (set, list):
+            k = list(k)
+        elif type(k) is not tuple:
+            k = (k,)
+        flat.update({k:v})
+        updated_dict = flatten_dict.unflatten(flat)
+        return updated_dict
 
 # Grabs the Klipper config for extended_template,
 # uses the path variable to determine the extension,
