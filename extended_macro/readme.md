@@ -3,6 +3,7 @@
 * Allow the use of custom Python functions in your Klipper macros by defining the functions in a YAML config file
 * By default includes many additional modules and functions. See below for more information.
 * Functions can accept parameters and return values to the macro.
+* Enables the `do` and `loopcontrols` Jinja2 extensions
 
 ### WARNING:
 
@@ -24,7 +25,7 @@ ${KLIPPY_ENV}/pip install -r ${HOME}/requirements.txt
 ---
 **Setup:**
 
-1. In your Klipper config, add the following section:
+1. In your Klipper config, add the following section. Nothing more is needed if you do not plan on using your own Python scripts:
 ```
 [extended_template]
 ```
@@ -48,36 +49,45 @@ When defining the macro, use `extended_macro` as the config name instead of `gco
 ---
 **Defaults**
 
-`extended_macro` comes with many default functions which do not need to be added or declared by the user. These include:
+`extended_macro` comes with many default functions which do not need to be added or declared by the user. 
 
-*Types:*
-```
-list
-dict
-set
-tuple
-str
-int
-float
-bool
-type
-```
+---
 
-*Built-ins:*
-```
-dir
-getattr
-setattr
-locals
-globals
-math
-itertools
-```
+*Custom Utility Functions*:
 
+`update_gcode_variable(macro_name: str, variable: str, value: Any)`: Update a G-Code variable for any macro. Unlike `SET_GCODE_VARIABLE`, allows for non-literals to be passed and updated. 
+
+`update_dict(dict: dict, keys: Union[list, tuple, set, str], value: Any)`: Update the value of a dictionary. Allows for a nested value to be updated if a list, tuple, or set is passed for `keys`.
+
+`call_macro(self, macro_name: str, **params)`: Call any macro. As the G-Code interpreter is not used for this function, the params can be of any type.
+
+---
+
+*Data Types:*
+
+* `list`
+* `dict`
+* `set`
+* `tuple`
+* `str`
+* `int`
+* `float`
+* `bool`
+* `type`
+---
+
+*Python Built-ins:*
+
+* `dir`
+* `getattr`
+* `setattr`
+* `locals`
+* `globals`
+* `math`
+* `itertools`
+---
 *Additional:*
-```
-pandas
-numpy
-datetime
-collections
-```
+* `pandas`
+* `numpy`
+* `datetime`
+* `collections`
