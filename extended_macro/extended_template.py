@@ -196,11 +196,8 @@ class PythonFunction:
                 u_key = '_%s' % key
             else:
                 u_key = key
-
             all_funcs[u_key] = val
-
-        print('All Funcs:')
-        print(all_funcs)
+            
         return all_funcs
 
         
