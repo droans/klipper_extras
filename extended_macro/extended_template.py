@@ -85,6 +85,7 @@ class DefaultLoader:
 
         self.custom_defaults = {
             'update_gcode_variable': self.update_gcode_variable,
+            'call_macro': self.call_macro
         }
 
         self._funcs = self._load_defaults()
@@ -117,6 +118,13 @@ class DefaultLoader:
             raise self.Log.Error('Unknown gcode_macro variable %s' % (variable,))
         macro.variables[variable] = value
 
+    def call_macro(self, macro_name, **params):
+        macro = self.get_macro(macro_name)
+        kwparams = {}
+        kwparams.update(macro.template.create_template_context())
+        kwparams['params'] = params
+        macro.template.run_gcode_from_command(kwparams)
+        
 # Grabs the Klipper config for extended_template,
 # uses the path variable to determine the extension,
 # determines the proper loader for that extension,
