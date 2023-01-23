@@ -52,7 +52,9 @@ class YamlLoader():
             self.yaml = yaml.load(f, Loader=yaml.Loader)
         
         func_yaml = self.yaml.get('functions',{})
+        filter_yaml = self.yaml.get('filters', {})
         self._funcs = self._import_function_dict(func_yaml)
+        self._filters = self._import_function_dict(filter_yaml)
 
     # Loops through each item in the config, passes
     # the data off to _import_function which will return
@@ -62,6 +64,9 @@ class YamlLoader():
 
     def GetFunctions(self):
         return self._funcs
+
+    def GetFilters(self):
+        return self._filters
 
     def _import_function_dict(self, funcs):
         return_funcs = {}
@@ -177,6 +182,7 @@ class PythonFunction:
         self.config_path = config.get('path', None)
         self.Loader = self._get_loader()
         self.Functions = self._import_functions()
+        self.Filters = self._load_filters()
 
     def _import_functions(self):
         defaults_loaded = False
@@ -229,6 +235,9 @@ class PythonFunction:
         funcs = self._load_functions(loader)
         return funcs
         
+    def _load_filters(self):
+        return self.Loader.GetFilters()
+
     def _load_functions(self, loader=None):
         if loader is None:
             loader = self.Loader

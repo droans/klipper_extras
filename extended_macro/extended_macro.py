@@ -52,6 +52,9 @@ class ExtendedPrinterGCodeMacro(PrinterGCodeMacro, object):     #Dummy `object` 
             jinja_func = {name:func}
             self.env.globals.update(**jinja_func)
 
+        for name, func in config.Filters.items():
+            self.env.filters[name] = func
+
         self.env.add_extension(jinja2.ext.do)
         self.env.add_extension(jinja2.ext.loopcontrols)
 
