@@ -75,6 +75,7 @@ class ExtendedGCodeMacro(GCodeMacro):
         name = config.get_name().split()[1]
         self.alias = name.upper()
         self.printer = printer = config.get_printer()
+        self.error = config.error
         gcode_macro = printer.load_object(config, 'extended_macro')
         self.template = gcode_macro.load_template(config, 'gcode')
         self.gcode = printer.lookup_object('gcode')
