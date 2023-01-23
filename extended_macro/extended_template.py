@@ -182,7 +182,8 @@ class PythonFunction:
 
     def _load_defaults(self):
         loader = self._get_loader('default')
-        return self._load_functions(loader)
+        funcs = self._load_functions(loader)
+        return funcs
         
     def _load_functions(self, loader, config_path = None):
         result = loader(config_path, self.config)
