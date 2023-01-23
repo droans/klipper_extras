@@ -112,7 +112,6 @@ class DefaultLoader:
         return macro
 
     def update_gcode_variable(self, macro_name, variable, value):
-        # macro = self.printer.lookup_object(macro_name)
         macro = self.get_macro(macro_name)
         if variable not in macro.variables:
             raise self.Log.Error('Unknown gcode_macro variable %s' % (variable,))
