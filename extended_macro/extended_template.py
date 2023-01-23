@@ -111,19 +111,32 @@ class DefaultLoader:
 
         return macro
 
+    # update_gcode_variable
+    #
+    # Set the value of any GCode Variable for another (or the current) macro. 
+    #
+    # Main differences between SET_GCODE_VARIABLE:
+    #   * Can only be called in a macro
+    #   * Can update any variable, not just literals. 
+    #   * Does not require running through the interpreter; instead is only run inside Python
+    #
     def update_gcode_variable(self, macro_name, variable, value):
         macro = self.get_macro(macro_name)
         if variable not in macro.variables:
             raise self.Log.Error('Unknown gcode_macro variable %s' % (variable,))
         macro.variables[variable] = value
 
+    # call_macro
+    #
+    # Allows for a macro to be called while passing parameters which cannot be interpreted as literals
+    #
     def call_macro(self, macro_name, **params):
         macro = self.get_macro(macro_name)
         kwparams = {}
         kwparams.update(macro.template.create_template_context())
         kwparams['params'] = params
         macro.template.run_gcode_from_command(kwparams)
-        
+
 # Grabs the Klipper config for extended_template,
 # uses the path variable to determine the extension,
 # determines the proper loader for that extension,
