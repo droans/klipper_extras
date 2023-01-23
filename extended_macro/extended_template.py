@@ -85,7 +85,7 @@ class DefaultLoader:
 
     def _load_defaults(self):
         def_funcs = {}
-        for name, func in DEFAULTS.items():
+        def_funcs.update(DEFAULTS)
             def_funcs[name] = func
         return def_funcs
 
