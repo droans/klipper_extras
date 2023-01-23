@@ -82,17 +82,40 @@ class DefaultLoader:
         self.path = yaml_path
         self.Log = Logger(config)
         self.printer = config.printer
+
+        self.custom_defaults = {
+            'update_gcode_variable': self.update_gcode_variable,
+        }
+
         self._funcs = self._load_defaults()
 
     def _load_defaults(self):
         def_funcs = {}
         def_funcs.update(DEFAULTS)
-            def_funcs[name] = func
+        def_funcs.update(self.custom_defaults)
         return def_funcs
 
     def GetFunctions(self):
         return self._funcs
 
+    def get_macro(self, macro_name):
+        if 'extended_macro' not in macro_name and 'gcode_macro' not in macro_name:
+            try:
+                macro = self.printer.lookup_object('extended_macro %s' % (macro_name))
+            except:
+                macro = self.printer.lookup_object('gcode_macro %s' % (macro_name))
+                
+        else:
+            macro = self.printer.lookup_object(macro_name)
+
+        return macro
+
+    def update_gcode_variable(self, macro_name, variable, value):
+        # macro = self.printer.lookup_object(macro_name)
+        macro = self.get_macro(macro_name)
+        if variable not in macro.variables:
+            raise self.Log.Error('Unknown gcode_macro variable %s' % (variable,))
+        macro.variables[variable] = value
 
 # Grabs the Klipper config for extended_template,
 # uses the path variable to determine the extension,
