@@ -176,8 +176,9 @@ class PythonFunction:
         
         self.config_path = config.get('path', None)
         self.Loader = self._get_loader()
+        self.Functions = self._import_functions()
 
-    def _import(self):
+    def _import_functions(self):
         defaults_loaded = False
         if self.config_path is not None:
             user_funcs, defaults_loaded = self._import_user_functions()
