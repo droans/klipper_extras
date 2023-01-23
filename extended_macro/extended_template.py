@@ -3,8 +3,7 @@ import os, yaml, imp
 
 # Additional defaults for G-Code
 import math, pandas, numpy, datetime, itertools, collections
-import flatten_dict.flatten
-import flatten_dict.unflatten
+import flatten_dict
 
 # DEFAULTS
 # The default imports to be loaded by extended_template. 
