@@ -51,7 +51,7 @@ class YamlLoader():
         with open(yaml_path, 'r') as f:
             self.yaml = yaml.load(f, Loader=yaml.Loader)
         
-        func_yaml = self.yaml.get('functions',None)
+        func_yaml = self.yaml.get('functions',{})
         self._funcs = self._import_function_dict(func_yaml)
 
     # Loops through each item in the config, passes
