@@ -175,7 +175,7 @@ class PythonFunction:
         self.Log = Logger(config)
         
         self.config_path = config.get('path', None)
-        self.Functions = self._import()
+        self.Loader = self._get_loader()
 
     def _import(self):
         defaults_loaded = False
@@ -200,9 +200,11 @@ class PythonFunction:
             
         return all_funcs
 
-        
-    def _get_loader(self, ext):
+    def _get_loader(self, ext=None):
         loader = None
+        if ext is None:
+            ext = self.config_path.split('.')[-1]
+        
         for l in LOADERS:
             c_ext = l['extensions']
 
@@ -211,15 +213,14 @@ class PythonFunction:
 
             if ext in l['extensions']:
                 loader = l['func_loader']
-                return loader
+                return loader(self.config_path, self.config)
 
         if loader is None:
             raise self.Log.Error('extended_template: No loader found for extension %s' % ext)
 
+
     def _import_user_functions(self):
-        ext = self.config_path.split('.')[-1]
-        loader = self._get_loader(ext)
-        funcs, defaults_loaded = self._load_functions(loader, self.config_path)
+        funcs, defaults_loaded = self._load_functions()
         return funcs, defaults_loaded
 
     def _load_defaults(self):
@@ -227,10 +228,11 @@ class PythonFunction:
         funcs = self._load_functions(loader)
         return funcs
         
-    def _load_functions(self, loader, config_path = None):
-        result = loader(config_path, self.config)
-        funcs = result.GetFunctions()
-        defaults_loaded = result.DefaultsLoaded
+    def _load_functions(self, loader=None):
+        if loader is None:
+            loader = self.Loader
+        funcs = loader.GetFunctions()
+        defaults_loaded = loader.DefaultsLoaded
 
         return funcs, defaults_loaded
 
