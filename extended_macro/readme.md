@@ -55,40 +55,28 @@ When defining the macro, use `extended_macro` as the config name instead of `gco
 
 ## Installation Instructions
 
-Do the following commands at the command prompt of the Raspberry Pi running Klipper for your 3D printer:
+Download the files onto your Klipper host machine using the following command:
+On your Run the following commands in the command prompt of the Raspberry Pi running Klipper for your 3D printer:
 
 ```BASH
 cd ~
-```
-
-```BASH
 git clone https://github.com/droans/klipper_extras.git
 ```
+
+Next, install Extended Macro using our install script. As with any script, please take time and read the script first so you can ensure the safety. Alternatively, if you understand how, you may download the files and manually install Extended Macro:
 
 ```BASH
 ./klipper_extras/install.sh
 ```
 
-When the script finishes, do the following:
-
-copy the script file to your home directory (i.e. /home/pi):
+When the script finishes, copy the install script to your home directory so that we can edit it. On Line #3, you will need to adjust `FLAG=1` to `FLAG=0`. The reason for copying the file to your home directory is Moonraker will not like it if you edit the file while it is in the clone repo directory and will force you to overwrite the changes.
 
 ```BASH
-cp /home/pi/klipper_extras/install.sh /home/pi/extended_macro_install.sh
-
-```
-
-edit the script and change the `FLAG=1` to a `FLAG=0` on the third line of the script file:
-
-```BASH
+cp ${HOME}/klipper_extras/install.sh ${HOME}/extended_macro_install.sh
 nano /home/pi/extended_macro_install.sh
 ```
 
-The reason for copying the file to your home directory is Moonraker will not like it if you edit the file while it is in the clone repo directory and will force you to overwrite the changes.
-
-Now, set up the moonraker section of your printer, so it can keep this extension updated for you automatically:
-
-Edit your `moonraker.conf` file and add the following:
+At this point, Extended Macro is ready to be used. If you wish to add this to your update manager, edit your `moonraker.conf` file and add the following:
 
 ```BASH
 [update_manager extended_macro]
