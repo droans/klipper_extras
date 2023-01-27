@@ -7,7 +7,8 @@ set -e
 
 KLIPPER_PATH="${HOME}/klipper"
 SYSTEMDDIR="/etc/systemd/system"
-EXTENSION_LIST="extended_macro.py extended_template.py"
+EXTENSION_LIST="extended_macro.py extended_template.py delayed_extended.py"
+
 SRCDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )"/ && pwd )"
 
 HOME_DIR="${HOME}"
@@ -21,9 +22,7 @@ function produce_newline() {
    echo " "
 }
 
-
 # Step 1:  Verify directories exist and pip and python are installed in ENV_DIR
-
 
 function validate_env_dir() {
   if [ -d "$ENV_DIR" ]; then
