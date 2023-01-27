@@ -53,6 +53,50 @@ When defining the macro, use `extended_macro` as the config name instead of `gco
 
 ---
 
+## Installation Instructions
+
+Download the files onto your Klipper host machine using the following command:
+On your Run the following commands in the command prompt of the Raspberry Pi running Klipper for your 3D printer:
+
+```BASH
+cd ~
+git clone https://github.com/droans/klipper_extras.git
+```
+
+Next, install Extended Macro using our install script. As with any script, please take time and read the script first so you can ensure the safety. Alternatively, if you understand how, you may download the files and manually install Extended Macro:
+
+```BASH
+./klipper_extras/install.sh
+```
+
+When the script finishes, copy the install script to your home directory so that we can edit it. On Line #3, you will need to adjust `FLAG=1` to `FLAG=0`. The reason for copying the file to your home directory is Moonraker will not like it if you edit the file while it is in the clone repo directory and will force you to overwrite the changes.
+
+```BASH
+cp ${HOME}/klipper_extras/install.sh ${HOME}/extended_macro_install.sh
+nano /home/pi/extended_macro_install.sh
+```
+
+At this point, Extended Macro is ready to be used. If you wish to add this to your update manager, edit your `moonraker.conf` file and add the following:
+
+```BASH
+[update_manager extended_macro]
+type: git_repo
+primary_branch: main
+path: ~/klipper_extras
+origin: https://github.com/droans/klipper_extras.git
+env: ~/klippy-env/bin/python
+requirements: extended_macro/requirements.txt
+install_script: ./../extended_macro_install.sh
+is_system_service: False
+managed_services: klipper
+```
+
+With this above setup pointing the installation script to your home directory, anytime the extended_macro extension gets updated, your extended_macro_install.sh file will not be overwritten by the GitHub clone of the repo.
+
+We want the `FLAG=0` to stay that way.  You only need to install the additional software packages one time. Moonraker will take care of ensuring that the packages needed by the extension are updated (the `requirements` option takes care of that for you).
+
+---
+
 *Custom Utility Functions*:
 
 `update_gcode_variable(macro_name: str, variable: str, value: Any)`: Update a G-Code variable for any macro. Unlike `SET_GCODE_VARIABLE`, allows for non-literals to be passed and updated. 
