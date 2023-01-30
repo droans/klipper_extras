@@ -8,7 +8,7 @@
 #
 
 import logging
-import delayed_gcode
+from .delayed_gcode import DelayedGcode
 
 ######################################################################
 # Extended Delayed GCode macro
@@ -16,7 +16,7 @@ import delayed_gcode
 #
 # Inherits DelayedGcode from delayed_gcode.py
 # Only changes the template objects
-class ExtendedDelayedGcode(delayed_gcode.DelayedGcode):
+class ExtendedDelayedGcode(DelayedGcode):
     def __init__(self, config):
         self.printer = config.get_printer()
         self.reactor = self.printer.get_reactor()

@@ -6,11 +6,11 @@ import math, pandas, numpy, datetime, itertools, collections
 import flatten_dict
 
 # DEFAULTS
-# The default imports to be loaded by extended_template. 
+# The default imports to be loaded by extended_template.
 # These do not need to be defined by the user in their config file
 # If there is a name collision, the default imports will be given priority
 # while the user defined functions are renamed with an underscore.
-# 
+#
 # For example, if the user were to define their own function named `list` (the same name as a default below),
 # the user defined `list` will be renamed to `_list`.
 DEFAULTS = {
@@ -49,7 +49,7 @@ class YamlLoader():
 
         with open(yaml_path, 'r') as f:
             self.yaml = yaml.load(f, Loader=yaml.Loader)
-        
+
         func_yaml = self.yaml.get('functions',{})
         filter_yaml = self.yaml.get('filters', {})
         self._funcs = self._import_function_dict(func_yaml)
@@ -58,7 +58,7 @@ class YamlLoader():
     # Loops through each item in the config, passes
     # the data off to _import_function which will return
     # the actual function if it exists, and then adds
-    # each function to the function dictionary so they can 
+    # each function to the function dictionary so they can
     # be added by extended_macro to the Jinja environment
 
     def GetFunctions(self):
@@ -112,7 +112,7 @@ class DefaultLoader:
                 macro = self.printer.lookup_object('extended_macro %s' % (macro_name))
             except:
                 macro = self.printer.lookup_object('gcode_macro %s' % (macro_name))
-                
+
         else:
             macro = self.printer.lookup_object(macro_name)
 
@@ -120,11 +120,11 @@ class DefaultLoader:
 
     # update_gcode_variable
     #
-    # Set the value of any GCode Variable for another (or the current) macro. 
+    # Set the value of any GCode Variable for another (or the current) macro.
     #
     # Main differences between SET_GCODE_VARIABLE:
     #   * Can only be called in a macro
-    #   * Can update any variable, not just literals. 
+    #   * Can update any variable, not just literals.
     #   * Does not require running through the interpreter; instead is only run inside Python
     #
     def update_gcode_variable(self, macro_name, variable, value):
@@ -144,7 +144,7 @@ class DefaultLoader:
         kwparams['params'] = params
         macro.template.run_gcode_from_command(kwparams)
 
-    # update_dict 
+    # update_dict
     #
     # Allows for updating a nested dictionary by passing a list, set, or tuple of keys.
     # If the set of keys do not lead to a valid existing item, the keys will be created.
@@ -177,7 +177,7 @@ class PythonFunction:
         self.printer = self.config.get_printer()
         self.gcode = self.printer.lookup_object('gcode')
         self.Log = Logger(config)
-        
+
         self.config_path = config.get('path', None)
         self.Loader = self._get_loader()
         self.Functions = self._import_functions()
@@ -203,14 +203,14 @@ class PythonFunction:
             else:
                 u_key = key
             all_funcs[u_key] = val
-            
+
         return all_funcs
 
     def _get_loader(self, ext=None):
         loader = None
         if ext is None:
             ext = self.config_path.split('.')[-1]
-        
+
         for l in LOADERS:
             c_ext = l['extensions']
 
@@ -233,7 +233,7 @@ class PythonFunction:
         loader = self._get_loader('default')
         funcs = self._load_functions(loader)
         return funcs
-        
+
     def _load_filters(self):
         return self.Loader.GetFilters()
 
@@ -246,7 +246,7 @@ class PythonFunction:
         return funcs, defaults_loaded
 
     def _insert_function(self, func_name, func):
-        if func_name in self.Functions: 
+        if func_name in self.Functions:
             func_name = '_%s' % func_name
 
 def load_config(config):
@@ -254,35 +254,35 @@ def load_config(config):
 
 # LOADERS
 # The definitions in this list will be used to determine the proper loader for the extensions given
-# 
-# Since different loaders might need or want different methods of parsing the file, 
+#
+# Since different loaders might need or want different methods of parsing the file,
 # the script expects that the loader is a function, not a class. The function should
 # process the config file and return a dictionary with the jinja function name as the key
 # and the actual Python function as the value
-# 
+#
 # The loader for DEFAULTS should be defined with an extension of ['default']
 # This loader will be ignored if the property loader.DefaultsLoaded property is true (see below)
-# 
+#
 # Definition: {'extensions': <collection_or_string>, 'loader': <class>}
-# 
-# Arguments received: 
+#
+# Arguments received:
 #   * config_path: Path to config set in [extended_template]
 #   * config: Config object received from Klipper
 #
 # Required Properties and Functions:
 #   * loader.DefaultsLoaded <property>: <bool>
-#       - If True, it is assumed the loader has loaded the defaults listed below. 
+#       - If True, it is assumed the loader has loaded the defaults listed below.
 #       - If False, assumes the loader has not loaded the defaults listed below.
 #       - It is suggested that the Loader should never process defaults unless:
 #           * The user defines the defaults in the config file
 #           * The loader defines it's own defaults
 #           * Any other scenario where it's better to load the defaults by the loader instead of separately
-#   * loader.GetFunctions(self) <function> = <dict> 
+#   * loader.GetFunctions(self) <function> = <dict>
 #       - Loads user-defined functions.
-#           * Optionally, 
+#           * Optionally,
 #       - Returns schema: {defined_function_name_for_jinja <str>: function <callable>}
-# 
-# 
+#
+#
 LOADERS = [
     {
         'extensions': ['yaml','yml'],
