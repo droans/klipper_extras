@@ -1,0 +1,20 @@
+##################
+#      Root      #
+##################
+
+# Default Code Owner
+*                               @droans
+
+# Install Script
+install.sh                      @gadgetangel
+docs                            @gadgetangel, @droans
+
+##################
+# Extended Macro #
+##################
+
+# Requirements file
+extended_macro/requirements.txt @droans, @gadgetangel
+
+# Examples
+extended_macro/example/         @droans, @gadgetangel
