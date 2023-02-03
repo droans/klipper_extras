@@ -41,7 +41,7 @@ class ExtendedTemplateWrapper(TemplateWrapper):
             raise printer.config_error(msg)
 
 # Inherits PrinterGCodeMacro from gcode_macro.py
-# Code added to utilize 
+# Code added to utilize
 class ExtendedPrinterGCodeMacro(PrinterGCodeMacro, object):     #Dummy `object` required due to the Python 2 requirement for using super()
     def __init__(self, config):
         super(ExtendedPrinterGCodeMacro, self).__init__(config)
