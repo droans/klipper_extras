@@ -408,7 +408,7 @@ function create_moonraker_file() {
     touch ${SRCDIR}/extended_macro/extended_template_update.conf
     echo "[update_manager extended_template]" >> ${SRCDIR}/extended_macro/extended_template_update.conf
     echo "type: git_repo" >> ${SRCDIR}/extended_macro/extended_template_update.conf
-    echo "primary_branch: main" >> ${SRCDIR}/extended_macro/extended_template_update.conf
+    echo "primary_branch: shell-install" >> ${SRCDIR}/extended_macro/extended_template_update.conf
     echo "path: ~/klipper_extras" >> ${SRCDIR}/extended_macro/extended_template_update.conf
     echo "origin: https://github.com/droans/klipper_extras.git" >> ${SRCDIR}/extended_macro/extended_template_update.conf
     echo "env: ~/klippy-env/bin/python" >> ${SRCDIR}/extended_macro/extended_template_update.conf

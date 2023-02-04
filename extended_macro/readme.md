@@ -59,12 +59,15 @@ On your Run the following commands in the command prompt of the Raspberry Pi run
 
 ```BASH
 cd ~
-git clone -b shell-install --single-branch git@github.com:droans/klipper_extras.git
+git clone https://github.com/droans/klipper_extras.git
+cd ~/klipper_extras
+git checkout shell-install
 ```
 
 Next, install Extended Template using our installation script. As with any script, please take time and read the script first, so you can ensure the safety. Alternatively, if you understand how, you may download the files and manually install Extended Macro:
 
 ```BASH
+cd ~
 ./klipper_extras/install.sh
 ```
 
