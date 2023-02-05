@@ -14,7 +14,7 @@
     * Klipper Extras: Usually located at `/home/USER/klipper/klippy/extras`.
     * Klippy Virtual Environment `bin` directory: Usually located at `/home/USER/klippy/bin`
 2. Clone this repository or download `extended_macro.py`, `extended_template.py`, and `requirements.txt`
-3. Move `extended_macro.py` and `extended_template.py` to your Klipper Extras folder. 
+3. Move `extended_macro.py` and `extended_template.py` to your Klipper Extras folder.
 4. Move `requirements.txt` to your home directory.
 5. Run the following command, substituting `${KLIPPY_ENV}` with the Klippy Virtual Environment bin directory:
 
@@ -44,19 +44,12 @@ ${KLIPPY_ENV}/pip install -r ${HOME}/requirements.txt
 
 See the examples folder for more guidance.
 
-When defining the macro, use `extended_macro` as the config name instead of `gcode_macro`. To use your function, you will wrap the name with curly brackets (`{gcode_function_name_goes_here}`). 
+When defining the macro, use `extended_macro` as the config name instead of `gcode_macro`. To use your function, you will wrap the name with curly brackets (`{gcode_function_name_goes_here}`).
 
 ---
 **Defaults**
 
-`extended_macro` comes with many default functions which do not need to be added or declared by the user. 
-
----
-
-<img src=".\images\Sign1.svg" width="600">
-
->:bulb:
->If you have made the switch to python3 for Klipper (when using KIAUH you will see `(py3)` next to the Klipper Repo), you will need >to follow the instruction for installation from the [`shell-script` branch of this GitHub Repo](https://github.com/droans/>klipper_extras/tree/shell-install/extended_macro#installation-instructions)
+`extended_macro` comes with many default functions which do not need to be added or declared by the user.
 
 ---
 
@@ -82,6 +75,14 @@ When the script finishes, copy the install script to your home directory so that
 cp ${HOME}/klipper_extras/install.sh ${HOME}/extended_macro_install.sh
 nano /home/pi/extended_macro_install.sh
 ```
+---
+## <img src=".\images\Sign1.svg" width="600">
+
+>:bulb:
+>If you have made the switch to python3 for Klipper (when using KIAUH you will see `(py3)` next to the Klipper Repo), you will need
+>to follow the instruction for installation from the [`shell-script` branch of this GitHub Repo](https://github.com/droans/>klipper_extras/tree/shell-install/extended_macro#installation-instructions)
+
+---
 
 At this point, Extended Macro is ready to be used. If you wish to add this to your update manager, edit your `moonraker.conf` file and add the following:
 
@@ -106,7 +107,7 @@ We want the `FLAG=0` to stay that way.  You only need to install the additional 
 
 *Custom Utility Functions*:
 
-`update_gcode_variable(macro_name: str, variable: str, value: Any)`: Update a G-Code variable for any macro. Unlike `SET_GCODE_VARIABLE`, allows for non-literals to be passed and updated. 
+`update_gcode_variable(macro_name: str, variable: str, value: Any)`: Update a G-Code variable for any macro. Unlike `SET_GCODE_VARIABLE`, allows for non-literals to be passed and updated.
 
 `update_dict(dict: dict, keys: Union[list, tuple, set, str], value: Any)`: Update the value of a dictionary. Allows for a nested value to be updated if a list, tuple, or set is passed for `keys`.
 
