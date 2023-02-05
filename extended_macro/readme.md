@@ -53,7 +53,14 @@ When defining the macro, use `extended_macro` as the config name instead of `gco
 
 ---
 
-## Installation Instructions
+<img src=".\images\Sign1.svg" width="600">
+
+>:bulb:
+>If you have made the switch to python3 for Klipper (when using KIAUH you will see `(py3)` next to the Klipper Repo), you will need >to follow the instruction for installation from the [`shell-script` branch of this GitHub Repo](https://github.com/droans/>klipper_extras/tree/shell-install/extended_macro#installation-instructions)
+
+---
+
+## Installation Instructions for python2 virtual environment
 
 Download the files onto your Klipper host machine using the following command:
 On your Run the following commands in the command prompt of the Raspberry Pi running Klipper for your 3D printer:
