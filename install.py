@@ -307,7 +307,11 @@ class Installer():
             'B': self.MainMenu
         }
         func = vals.get(result, def_val)
-        func()
+        if func == def_val:
+            raw_input(def_val)
+            self.SettingsMenu()
+        else:
+            func()
 
     def base_settings_setter(self, default_value, header_text, input_text):
         self._clear_screen()
