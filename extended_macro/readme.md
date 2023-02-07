@@ -52,6 +52,11 @@ When defining the macro, use `extended_macro` as the config name instead of `gco
 `extended_macro` comes with many default functions which do not need to be added or declared by the user.
 
 ---
+## Installation Instructions for Python2 virtual environment and Python3 virtual environments
+
+If you have a klipper python2 virtual environment follow these [instructions](#installation-instructions-for-python2-virtual-environment)
+
+IF you have a klipper python3 virtual environment follow these [instructions](#installation-for-python3)
 
 ## Installation Instructions for python2 virtual environment
 
@@ -76,7 +81,9 @@ cp ${HOME}/klipper_extras/install.sh ${HOME}/extended_macro_install.sh
 nano /home/pi/extended_macro_install.sh
 ```
 ---
-## <img src=".\images\Sign1.svg" width="600">
+## Installation for python3
+
+ <img src=".\images\Sign1.svg" width="600">
 
 >:bulb:
 >If you have made the switch to python3 for Klipper (when using KIAUH you will see `(py3)` next to the Klipper Repo), you will need
