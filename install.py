@@ -380,6 +380,5 @@ if not installer_reqs_installed:
 
 def test():
     x = Installer()
-    # x.LoadConfig()
     x.MainMenu()
     return x
