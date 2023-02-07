@@ -199,6 +199,10 @@ class Installer():
         conf = self.Moonraker.get_config()
         self.Config.load_config(conf)
 
+    def LoadConfigAndMenu(self):
+        self.LoadConfig()
+        self.MainMenu()
+
     def InstallRequirements(self):
         if self.Config.Config is None:
             self.LoadConfig()
@@ -262,19 +266,22 @@ class Installer():
 
         result = raw_input('Select Option: ')
 
-        if result == '1':
-            self.InstallMenu()
-        elif result == '2':
-            self.LoadConfig()
+        vals = {
+            '1': self.InstallMenu,
+            '2': self.LoadConfigAndMenu,
+            '3': self.SettingsMenu,
+            '0': sys.exit
+        }
+        def_val = 'Invalid Option %s!' % result
+
+        val = vals.get(def_val, None)
+
+        if val == def_val:
+            raw_input(def_val)
             self.MainMenu()
-        elif result == '3':
-            self.SettingsMenu()
-        elif result == '0':
-            sys.exit()
         else:
-            print('Invalid Option %s!' % result)
-            x = raw_input('Press Enter...')
-            self.MainMenu()
+            val()
+        
     def InstallMenu(self):
         self._clear_screen()
         self.screen_template('Installing')
