@@ -16,18 +16,6 @@ try:
 except:
     installer_reqs_installed = False
 
-def python_executable():
-    return os.sys.executable
-
-def install_installer_requirements():
-    python = python_executable()
-    install_command = [python, '-m', 'pip', 'install'] + INSTALLER_REQUIREMENTS
-    
-    print('Installing %s...' % ', '.join(INSTALLER_REQUIREMENTS))
-    subprocess.call(install_command)
-    print('Finished. Please rerun the install script.')
-    sys.exit()
-
 class APIConnection(object):
     def __init__(self):
         self._url = 'http://localhost:80'
