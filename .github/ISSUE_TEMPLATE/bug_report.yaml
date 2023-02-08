@@ -78,8 +78,8 @@ body:
       options:
         - Python 2.X
         - Python 3.X
-      validations:
-        required: true
+    validations:
+      required: true
   - type: dropdown
     id: klippy_py_version
     attributes:
