@@ -134,12 +134,21 @@ class Files(object):
         os.symlink(file.Name, path)
 
     def _hard_link(self, file, path):
+        if os.path.exists(path) or os.path.islink(path):
+            if not self._ask_and_overwrite(path):
+                return
         os.link(file.Name, path)
 
     def _copy(self, file, path):
+        if os.path.exists(path) or os.path.islink(path):
+            if not self._ask_and_overwrite(path):
+                return
         shutil.copy2(file.Name, path, follow_symlinks=True)
 
     def _move(self, file, path):
+        if os.path.exists(path) or os.path.islink(path):
+            if not self._ask_and_overwrite(path):
+                return
         shutil.move(file.Name, path)
 
     
