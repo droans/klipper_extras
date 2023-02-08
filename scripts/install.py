@@ -10,7 +10,7 @@ try:
 except:
     installer_reqs_installed = False
 
-INSTALLER_REQUIREMENTS = ['requests', 'pathlib']
+INSTALLER_REQUIREMENTS = ['requests==2.27.1', 'pathlib==1.0.1','pyyaml==2.27.1']
 
 REQUIREMENTS = {
     'python3': [
