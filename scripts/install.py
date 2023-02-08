@@ -89,6 +89,11 @@ class Config(object):
         self._python_path = directory
 
     @property
+    def PythonEnvBinary(self):
+        env_dir = self.EnvDirectory
+        return os.path.join(env_dir, 'python')
+
+    @property
     def PythonVersion(self):
         if self._py_version is not None:
             return self._py_version
