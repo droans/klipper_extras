@@ -5,6 +5,7 @@ labels:
   - status/0-triage
 body:
   - type: markdown
+    id: info
     attributes:
       value: | 
         Thank you for taking the time to fill out this report. 
@@ -97,7 +98,7 @@ body:
     validations:
       required: true
   - type: input
-    id: klippy_version
+    id: ext_macro_version
     attributes:
       label: Klippy Version
       description: What version of Extended Macro are you using?
