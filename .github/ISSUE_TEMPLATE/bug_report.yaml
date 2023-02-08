@@ -82,7 +82,7 @@ body:
     validations:
       required: true
   - type: dropdown
-    id: klippy_py_version
+    id: installer_py_version
     attributes:
       label: Installer Python
       description: If the issue occurred during the installation, what version of Python did you use for your installer?
