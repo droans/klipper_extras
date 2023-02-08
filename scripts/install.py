@@ -264,9 +264,8 @@ class Installer():
             '3': self.SettingsMenu,
             '0': sys.exit
         }
-        def_val = 'Invalid Option %s!' % result
-
-        val = vals.get(def_val, None)
+        def_val = 'Invalid Option: %s!' % result
+        val = vals.get(result, def_val)
 
         if val == def_val:
             Input(def_val)
