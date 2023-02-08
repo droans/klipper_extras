@@ -74,7 +74,7 @@ Add the section below to your `moonraker.conf`.
 ```BASH
 [update_manager extended_macro]
 type: git_repo
-primary_branch: add-python-install
+primary_branch: main
 path: ~/klipper_extras
 origin: https://github.com/droans/klipper_extras.git
 env: ~/klippy-env/bin/python
