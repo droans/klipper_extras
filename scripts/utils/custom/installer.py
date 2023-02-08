@@ -1,4 +1,4 @@
-from .base import Requirements
+from .constructors import Requirements
 from ..enums import PythonVersion
 
 class InstallerRequirements(Requirements):

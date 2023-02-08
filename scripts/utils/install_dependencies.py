@@ -2,7 +2,7 @@ import subprocess
 import os 
 import sys
 from .enums import PythonVersion
-from .custom.base import Requirements
+from .custom.constructors import Requirements
 
 class PythonDependencyInstaller(object):
     def __init__(self, requirements, python_version = None, python_executable_path = None):

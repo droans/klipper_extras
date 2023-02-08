@@ -1,4 +1,4 @@
-from .base import Requirements, File, Files
+from .constructors import Requirements, File, Files
 from ..enums import FileActions, PythonVersion
 class ExtendedMacroRequirements(Requirements):
     def __init__(self, python_version):
