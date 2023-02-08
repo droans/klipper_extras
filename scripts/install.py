@@ -179,8 +179,6 @@ class Installer():
         self.MainMenu()
 
     def InstallRequirements(self):
-        if self.Config.Config is None or self.Config.Config == {}:
-            self.LoadConfig()
 
         py_exec = self.Config.PythonEnvBinary
         py_ver = self.Config.PythonVersion
@@ -274,6 +272,8 @@ class Installer():
             val()
         
     def InstallMenu(self):
+        if self.Config.Config is None or self.Config.Config == {}:
+            self.LoadConfig()
         self._clear_screen()
         self.screen_template('Installer: Dependencies')
         self.InstallRequirements()
