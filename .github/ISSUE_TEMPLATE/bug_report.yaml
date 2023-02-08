@@ -39,6 +39,11 @@ body:
       label: Extended Macro Config 
       description: Please provide the configuration in config.yaml
       render: bash
+      placeholder: |
+        functions:
+          my_friendly_function:
+            path: /home/printer_data/functions/my_function.py
+            function: a_friendly_function
     validations:
       required: true
   - type: textarea
@@ -47,6 +52,9 @@ body:
       label: Extended Template Config
       description: Please provide the configuration for the `[extended_template]` section
       render: bash
+      placeholder: |
+        [extended_template]
+        path: /home/pi/printer_data/functions/config.yaml
     validations:
       required: true
   - type: textarea
@@ -55,6 +63,12 @@ body:
       label: Macro Config
       description: Please provide the configuration for the macro that is causing issues.
       render: bash
+      placeholder: |
+        [extended_macro MY_MACRO]
+        description: A friendly description
+        variable_xyz: 0
+        gcode:
+            ....
     validations:
       required: true
   - type: textarea
