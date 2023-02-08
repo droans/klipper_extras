@@ -2,7 +2,11 @@ from .constructors import Requirements, File, Files
 from ..enums import FileActions, PythonVersion
 class ExtendedMacroRequirements(Requirements):
     def __init__(self, python_version):
-        super().__init__(python_version)
+        if python_version == PythonVersion.PYTHON2:
+            super(ExtendedMacroRequirements,self).__init__(python_version)
+        else:
+            super().__init__(python_version)
+            
         self._python_2_mods = [
             'pyyaml==3.13',
             'numpy==1.16.6',
