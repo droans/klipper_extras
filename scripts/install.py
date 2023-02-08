@@ -3,48 +3,16 @@ import os
 import json
 import subprocess
 
+from utils.install_dependencies import PythonDependencyInstaller
+from utils.custom.installer import InstallerRequirements
+from utils.custom.extended_macro import ExtendedMacroRequirements, ExtendedMacroFiles
+
 try:
     import requests
     import pathlib
     installer_reqs_installed = True
 except:
     installer_reqs_installed = False
-
-INSTALLER_REQUIREMENTS = ['requests==2.27.1', 'pathlib==1.0.1','pyyaml==2.27.1']
-
-REQUIREMENTS = {
-    'python3': [
-        'pyyaml==5.3.1',
-        'numpy==1.24.1',
-        'pandas==1.5.3',
-        'flatten-dict==0.4.2',
-    ],
-    'python2': [
-        'pyyaml==3.13',
-        'numpy==1.16.6',
-        'pandas==0.23.4',
-        'flatten-dict==0.4.2',
-    ]
-}
-
-UPDATE_MANAGER = '''
-    [update_manager extended_macro]
-    type: git_repo
-    primary_branch: main
-    path: ~/klipper_extras
-    origin: https://github/com/droans/klipper_extras.git
-    env: ~/klippy-env/bin/python
-    requirements: ~/klipper_extras/extended_macro/requirements.txt
-    install_script: ~/klipper_extras/extended_macro/install.sh
-    is_system_service: False
-    managed_services: klipper
-    '''
-
-EXTENSION_FILES = [
-    'extended_macro/delayed_extended.py',
-    'extended_macro/extended_macro.py',
-    'extended_macro/extended_template.py'
-]
 
 def python_executable():
     return os.sys.executable
@@ -206,6 +174,13 @@ class Installer():
     def InstallRequirements(self):
         if self.Config.Config is None:
             self.LoadConfig()
+        py_reqs = ExtendedMacroRequirements(py_ver)
+        req_installer = PythonDependencyInstaller(
+            python_version = py_ver,
+            python_executable_path = py_exec,
+            requirements = py_reqs
+        )
+        req_installer.InstallRequirements()
         
     def screen_template(self, menu_name):
         hdr_mid = 37
