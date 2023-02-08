@@ -174,8 +174,11 @@ class Installer():
         self.MainMenu()
 
     def InstallRequirements(self):
-        if self.Config.Config is None:
+        if self.Config.Config is None or self.Config.Config == {}:
             self.LoadConfig()
+
+        py_exec = self.Config.PythonEnvBinary
+        py_ver = self.Config.PythonVersion
         py_reqs = ExtendedMacroRequirements(py_ver)
         req_installer = PythonDependencyInstaller(
             python_version = py_ver,
@@ -268,7 +271,9 @@ class Installer():
         
     def InstallMenu(self):
         self._clear_screen()
-        self.screen_template('Installing')
+        self.screen_template('Installer: Dependencies')
+        self.InstallRequirements()
+        self.screen_template('Installer: Files')
 
     def SettingsMenu(self):
         self._clear_screen()
