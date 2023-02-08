@@ -128,7 +128,7 @@ class Files(object):
             return self._ask_and_overwrite(path)
 
     def _soft_link(self, file, path):
-        if os.path.exists(path):
+        if os.path.exists(path) or os.path.islink(path):
             if not self._ask_and_overwrite(path):
                 return
         os.symlink(file.Name, path)
