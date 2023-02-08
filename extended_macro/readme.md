@@ -9,25 +9,53 @@
 
 **Do not blindly download Python scripts, both for use in your macros and this script itself.** Read the script and ensure you understand what is going on. The scripts can be powerful and useful, but they can also be dangerous. If the script looks questionable, dangerous, or too confusing, it's better to assume that it is malicious.
 
-**Installation:**
-1. Write down the location of the following directories:
-    * Klipper Extras: Usually located at `/home/USER/klipper/klippy/extras`.
-    * Klippy Virtual Environment `bin` directory: Usually located at `/home/USER/klippy/bin`
-2. Clone this repository or download `extended_macro.py`, `extended_template.py`, and `requirements.txt`
-3. Move `extended_macro.py` and `extended_template.py` to your Klipper Extras folder. 
-4. Move `requirements.txt` to your home directory.
-5. Run the following command, substituting `${KLIPPY_ENV}` with the Klippy Virtual Environment bin directory:
+---
+## Installation:
+
+This script utilizes Moonraker to ensure that files are placed in their proper locations, no matter the original install method.
+
+1. On the server running Klipper, run the following commands:
+
+```BASH
+cd ~
+git clone https://github.com/droans/klipper_extras.git
+cd klipper_extras
+python scripts/install.py
+```
+
+If necessary, the script will also install `requests` and `pathlib`. You will then need to rerun the script to continue.
+
+2. Ensure that Moonraker is accessible at the default URL. If you believe it is correct, skip to step 6.
+
+3. If the URL is incorrect, select `Settings`.
+
+4. At the Settings menu, select `Change Moonraker URL`. Type in the correct URL for Moonraker and press enter. While you can also manually set the other options, please note that these **will** be overwritten once Moonraker is contacted. As such, you should instead allow Moonraker to update the values first and then override them manually.
+
+5. Select `Go Back` to return to the Main Menu
+
+6. Select `Load Config From Moonraker`. As Moonraker should be running on the same machine or at least the same network, this should take less than one second to complete. If there is a delay, either the URL you are using is wrong or Moonraker is not running.
+
+7. If the config options listed are correct, select Install. At this point, all dependencies are installed to the Klippy Python environment and the modules will be soft-linked to the Klipper Extras Directory. 
+
+8. If the modules already exist (eg, old install), you will be prompted on whether the old files should be kept, replaced, or if you want to cancel the installation. If the files are symlinked, you usually are fine keeping them. If not, you will need to replace them. 
 
 ```
 ${KLIPPY_ENV}/pip install -r ${HOME}/requirements.txt
 ```
 
 ---
-**Setup:**
+## Setup:
 
-1. In your Klipper config, add the following section. Nothing more is needed if you do not plan on using your own Python scripts:
+1. In your Klipper config, add the following section.
 ```
+# Config Header
+# Enables extended_macro
 [extended_template]
+
+# The path to your extended_template config file.
+# If you do not plan on creating your own Python scripts, this is not required.
+# See example/function_config.yaml for the configuration schema. 
+path: /home/pi/printer_data/functions/config.yaml    
 ```
 
 ---
@@ -35,74 +63,41 @@ ${KLIPPY_ENV}/pip install -r ${HOME}/requirements.txt
 
 *See the examples folder for more guidance.*
 
-1. Create your Python script(s) with the function(s) you intend to use.
-2. Create a function configuration file using `example/function_config.yaml` as reference. YAML is the allowed schema. The extension must be `yml` or `yaml`
-3. In the `[extended_template]` section of your Klipper config, add the variable `path` with the value being the location of where you saved the config YAML file.
+1. Create your Python script(s) with the function(s) you intend to use and add them to your Extended Template `config.yaml`. 
+2. Reference them in your Klipper G-Code macro. They will be usable just like any other object.
 
 ---
-**Usage:**
+## Automating Updates
 
-See the examples folder for more guidance.
-
-When defining the macro, use `extended_macro` as the config name instead of `gcode_macro`. To use your function, you will wrap the name with curly brackets (`{gcode_function_name_goes_here}`). 
-
----
-**Defaults**
-
-`extended_macro` comes with many default functions which do not need to be added or declared by the user. 
-
----
-
-<img src=".\images\Sign1.svg" width="600">
-
->:bulb:
->If you have made the switch to python3 for Klipper (when using KIAUH you will see `(py3)` next to the Klipper Repo), you will need >to follow the instruction for installation from the [`shell-script` branch of this GitHub Repo](https://github.com/droans/>klipper_extras/tree/shell-install/extended_macro#installation-instructions)
-
----
-
-## Installation Instructions for python2 virtual environment
-
-Download the files onto your Klipper host machine using the following command:
-On your Run the following commands in the command prompt of the Raspberry Pi running Klipper for your 3D printer:
-
-```BASH
-cd ~
-git clone https://github.com/droans/klipper_extras.git
-```
-
-Next, install Extended Macro using our install script. As with any script, please take time and read the script first so you can ensure the safety. Alternatively, if you understand how, you may download the files and manually install Extended Macro:
-
-```BASH
-./klipper_extras/install.sh
-```
-
-When the script finishes, copy the install script to your home directory so that we can edit it. On Line #3, you will need to adjust `FLAG=1` to `FLAG=0`. The reason for copying the file to your home directory is Moonraker will not like it if you edit the file while it is in the clone repo directory and will force you to overwrite the changes.
-
-```BASH
-cp ${HOME}/klipper_extras/install.sh ${HOME}/extended_macro_install.sh
-nano /home/pi/extended_macro_install.sh
-```
-
-At this point, Extended Macro is ready to be used. If you wish to add this to your update manager, edit your `moonraker.conf` file and add the following:
+Add the section below to your `moonraker.conf`. 
 
 ```BASH
 [update_manager extended_macro]
 type: git_repo
-primary_branch: main
+primary_branch: add-python-install
 path: ~/klipper_extras
 origin: https://github.com/droans/klipper_extras.git
 env: ~/klippy-env/bin/python
 requirements: extended_macro/requirements.txt
-install_script: ./../extended_macro_install.sh
 is_system_service: False
-managed_services: klipper
+managed_services: 
+    klipper
 ```
 
-With this above setup pointing the installation script to your home directory, anytime the extended_macro extension gets updated, your extended_macro_install.sh file will not be overwritten by the GitHub clone of the repo.
 
-We want the `FLAG=0` to stay that way.  You only need to install the additional software packages one time. Moonraker will take care of ensuring that the packages needed by the extension are updated (the `requirements` option takes care of that for you).
 
 ---
+## Usage:
+
+This module will add all Python functions in your configuration to the Jinja globals namespace. As such, they will be accessible like any other available function or object. See the examples folder for more guidance.
+
+When defining the macro, use `extended_macro` as the config name instead of `gcode_macro` (eg, use `[extended_macro MY_MACRO]` instead of `[gcode_macro MY_MACRO]`). 
+
+---
+
+## Defaults
+
+`extended_macro` comes with many default functions which do not need to be added or declared by the user. 
 
 *Custom Utility Functions*:
 
@@ -114,7 +109,7 @@ We want the `FLAG=0` to stay that way.  You only need to install the additional 
 
 ---
 
-*Data Types:*
+#### Data Types:
 
 * `list`
 * `dict`
@@ -127,7 +122,7 @@ We want the `FLAG=0` to stay that way.  You only need to install the additional 
 * `type`
 ---
 
-*Python Built-ins:*
+#### Python Built-ins:
 
 * `dir`
 * `getattr`
@@ -137,7 +132,7 @@ We want the `FLAG=0` to stay that way.  You only need to install the additional 
 * `math`
 * `itertools`
 ---
-*Additional:*
+#### Additional:
 * `pandas`
 * `numpy`
 * `datetime`
