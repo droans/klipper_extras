@@ -278,7 +278,17 @@ class Installer():
         self._clear_screen()
         self.screen_template('Installer: Dependencies')
         self.InstallRequirements()
+        self._clear_screen()
         self.screen_template('Installer: Files')
+        script_path = os.path.normpath(os.path.dirname(__file__))
+        macro_path = os.path.join(script_path, os.pardir, 'extended_macro')
+        macro_path = os.path.normpath(macro_path)
+        f = ExtendedMacroFiles(macro_path)
+        f.AddActionPathVariable(
+            variable = 'klippy_extras',
+            value = self.Config.ExtrasDir
+        )
+        f.ProcessFiles()
 
     def SettingsMenu(self):
         self._clear_screen()

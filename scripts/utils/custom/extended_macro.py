@@ -48,22 +48,25 @@ class ExtendedMacroRequirements(Requirements):
         elif self._python_version == PythonVersion.PYTHON3:
             return self._python_3_apt
 
-ExtendedMacroFiles = Files(
-    [
-        File(
-            file_name='delayed_extended.py',
-            action=FileActions.SOFT_LINK,
-            action_path='klippy_extras'
-        ),
-        File(
-            file_name='extended_macro.py',
-            action=FileActions.SOFT_LINK,
-            action_path='klippy_extras'
-        ),
-        File(
-            file_name='extended_template.py',
-            action=FileActions.SOFT_LINK,
-            action_path='klippy_extras'
-        )
-    ]
-)
+def ExtendedMacroFiles(initial_file_path):
+    result = Files(
+        files=[
+            File(
+                file_name='delayed_extended.py',
+                action=FileActions.SOFT_LINK,
+                action_path='klippy_extras'
+            ),
+            File(
+                file_name='extended_macro.py',
+                action=FileActions.SOFT_LINK,
+                action_path='klippy_extras'
+            ),
+            File(
+                file_name='extended_template.py',
+                action=FileActions.SOFT_LINK,
+                action_path='klippy_extras'
+            )
+        ],
+        initial_file_path = initial_file_path
+    )
+    return result
