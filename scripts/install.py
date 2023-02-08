@@ -5,6 +5,7 @@ import subprocess
 
 from utils.enums import PythonVersion
 from utils.install_dependencies import PythonDependencyInstaller
+from utils.helpers import Input, GetPythonVersion
 from utils.custom.installer import InstallerRequirements
 from utils.custom.extended_macro import ExtendedMacroRequirements, ExtendedMacroFiles
 
@@ -142,7 +143,7 @@ class Moonraker():
             print('Moonraker is not accessible at %s' % self.url)
             print('Received error code: %s' % result.status_code)
             print('Type in the correct URL below. You can also press enter to retry with the same URL or `q` to quit.')
-            url = raw_input('URL (%s): ' % self.url)
+            url = Input('URL (%s): ' % self.url)
             if url == 'q':
                 sys.exit()
             elif len(url):
@@ -247,7 +248,7 @@ class Installer():
             klipper_mod_dir,)
         )
 
-        result = raw_input('Select Option: ')
+        result = Input('Select Option: ')
 
         vals = {
             '1': self.InstallMenu,
@@ -260,7 +261,7 @@ class Installer():
         val = vals.get(def_val, None)
 
         if val == def_val:
-            raw_input(def_val)
+            Input(def_val)
             self.MainMenu()
         else:
             val()
@@ -283,7 +284,7 @@ class Installer():
         B) Go Back
         ''')
 
-        result = raw_input('Select Option: ')
+        result = Input('Select Option: ')
 
         def_val = 'Invalid Option %s!' % result
 
@@ -298,7 +299,7 @@ class Installer():
         }
         func = vals.get(result, def_val)
         if func == def_val:
-            raw_input(def_val)
+            Input(def_val)
             self.SettingsMenu()
         else:
             func()
@@ -306,7 +307,7 @@ class Installer():
     def base_settings_setter(self, default_value, header_text, input_text):
         self._clear_screen()
         self.screen_template(header_text)
-        result = raw_input('%s (%s): ' % (input_text, default_value))
+        result = Input('%s (%s): ' % (input_text, default_value))
         return result
 
     def SetMoonrakerURL(self):
@@ -336,7 +337,7 @@ class Installer():
             '1': 'python2',
             '2': 'python3'
         }
-        result = raw_input('New URL (%s): ' % self.report_setting(self.Config.PythonVersion))
+        result = Input('New URL (%s): ' % self.report_setting(self.Config.PythonVersion))
         val = vals.get(result, None)
         if val is not None: 
             self.Config.PythonVersion = val
