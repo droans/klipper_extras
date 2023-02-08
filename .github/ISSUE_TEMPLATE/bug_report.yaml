@@ -1,0 +1,128 @@
+name: Bug report
+description: Submit a bug for Extended Macro
+labels:
+  - kind/bug
+  - status/0-triage
+body:
+  - type: markdown
+    id: info
+    attributes:
+      value: | 
+        Thank you for taking the time to fill out this report. 
+        Please provide as much detail for your issue as pobbile. 
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Please give as accurate of a description on the bug as possible
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduce
+      description: Please provide all information required to reproduce the bug
+      placeholder: |
+        1. Add code:
+        2. Call...
+        3. ???
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What is the expected behavior?
+  - type: textarea
+    id: ext_config
+    attributes:
+      label: Extended Macro Config 
+      description: Please provide the configuration in config.yaml
+      render: bash
+      placeholder: |
+        functions:
+          my_friendly_function:
+            path: /home/printer_data/functions/my_function.py
+            function: a_friendly_function
+    validations:
+      required: true
+  - type: textarea
+    id: extended_template_config
+    attributes:
+      label: Extended Template Config
+      description: Please provide the configuration for the `[extended_template]` section
+      render: bash
+      placeholder: |
+        [extended_template]
+        path: /home/pi/printer_data/functions/config.yaml
+    validations:
+      required: true
+  - type: textarea
+    id: macro_config
+    attributes:
+      label: Macro Config
+      description: Please provide the configuration for the macro that is causing issues.
+      render: bash
+      placeholder: |
+        [extended_macro MY_MACRO]
+        description: A friendly description
+        variable_xyz: 0
+        gcode:
+            ....
+    validations:
+      required: true
+  - type: textarea
+    id: macro_code
+    attributes:
+      label: Macro Python Code
+      description: Please provide the Python code giving issues.
+      render: python
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Please provide the relevant logs from klippy.log. Do not provide the logs from the Web UI. Include as little irrelevant data as possible (eg, lines starting with Stats).
+      render: bash
+  - type: dropdown
+    id: klippy_py_version
+    attributes:
+      label: Klippy Venv Python
+      description: What version of Python is used in your Klippy Virtual Environment?
+      options:
+        - Python 2.X
+        - Python 3.X
+    validations:
+      required: true
+  - type: dropdown
+    id: installer_py_version
+    attributes:
+      label: Installer Python
+      description: If the issue occurred during the installation, what version of Python did you use for your installer?
+      options:
+        - Python 2.X
+        - Python 3.X
+  - type: input
+    id: klippy_version
+    attributes:
+      label: Klippy Version
+      description: What version of Klipper is running on your Klipper server? You can find this usually in your Software Updates section of the Web UI.
+      placeholder: v0.11.0-0-ge02b7256
+    validations:
+      required: true
+  - type: input
+    id: ext_macro_version
+    attributes:
+      label: Klippy Version
+      description: What version of Extended Macro are you using?
+      placeholder: v0.3
+    validations:
+      required: true
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Info
+      description: Additional info you want to provide such as logs, system info, environment, etc.
+    validations:
+      required: false
