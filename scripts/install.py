@@ -348,7 +348,25 @@ class Installer():
             self.Config.ExtrasDir = result
         self.SettingsMenu()
 
-if not installer_reqs_installed:
-    print('Missing installer requirements. Press Enter to install or Ctrl+C to cancel')
-    raw_input()
-    install_installer_requirements()
+def check_installer_requirements():
+    if not installer_reqs_installed:
+        print('Missing installer requirements. Press Enter to install or Ctrl+C to cancel')
+        Input()
+        
+        py_exec = python_executable()
+        py_ver = GetPythonVersion()
+        py_reqs = InstallerRequirements(py_ver)
+        req_installer = PythonDependencyInstaller(
+            python_executable_path = py_exec,
+            requirements = py_reqs
+        )
+        req_installer.InstallRequirements()
+
+def main():
+    check_installer_requirements()
+    installer = Installer()
+    installer.MainMenu()
+
+if __name__ == '__main__':
+    main()
+
