@@ -32,7 +32,7 @@ class Requirements(object):
 
 class File(object):
     def __init__(self, file_name = None, action = None, action_path = None):
-        self._file_name = None        
+        self._file_name = file_name        
         self._action = action
         self._action_path = action_path
     
