@@ -11,7 +11,6 @@ from utils.custom.extended_macro import ExtendedMacroRequirements, ExtendedMacro
 
 try:
     import requests
-    import pathlib
     installer_reqs_installed = True
 except:
     installer_reqs_installed = False
