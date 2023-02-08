@@ -1,4 +1,4 @@
-# extended_macro
+# Klipper Extended Macro
 ---
 * Allow the use of custom Python functions in your Klipper macros by defining the functions in a YAML config file
 * By default includes many additional modules and functions. See below for more information.
@@ -67,7 +67,7 @@ path: /home/pi/printer_data/functions/config.yaml
 2. Reference them in your Klipper G-Code macro. They will be usable just like any other object.
 
 ---
-## Automating Updates
+**Automating Updates**
 
 Add the section below to your `moonraker.conf`. 
 
