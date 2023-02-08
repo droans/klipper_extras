@@ -3,6 +3,7 @@ import os
 import json
 import subprocess
 
+from utils.enums import PythonVersion
 from utils.install_dependencies import PythonDependencyInstaller
 from utils.custom.installer import InstallerRequirements
 from utils.custom.extended_macro import ExtendedMacroRequirements, ExtendedMacroFiles
@@ -97,9 +98,9 @@ class Config(object):
 
         files = os.listdir(env_dir)
         if 'python3' in files:
-            return 'python3'
+            return PythonVersion.PYTHON3
         else:
-            return 'python2'
+            return PythonVersion.PYTHON2
 
     @PythonVersion.setter
     def PythonVersion(self, version):
@@ -206,7 +207,14 @@ class Installer():
     def MainMenu(self):
         x = self.Config
         klippy_dir = self.report_setting(self.Config.EnvDirectory)
-        klippy_python = self.report_setting(self.Config.PythonVersion)
+        if self.Config.PythonVersion == PythonVersion.PYTHON2:
+            klippy_python = 'python2'
+        elif self.Config.PythonVersion == 'python3':
+            klippy_python = 'python3'
+        else:
+            klippy_python = None
+        klippy_python = self.report_setting(klippy_python)
+        
         klipper_dir = self.report_setting(self.Config.KlipperDir)
         klipper_mod_dir = self.report_setting(self.Config.ExtrasDir)
         
