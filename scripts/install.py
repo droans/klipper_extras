@@ -352,8 +352,3 @@ if not installer_reqs_installed:
     print('Missing installer requirements. Press Enter to install or Ctrl+C to cancel')
     raw_input()
     install_installer_requirements()
-
-def test():
-    x = Installer()
-    x.MainMenu()
-    return x
