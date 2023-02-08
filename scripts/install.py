@@ -124,6 +124,16 @@ class Config(object):
             directory = directory + '/'
         self._klippy_extra_dir = directory
 
+    @property
+    def ConfigDirectory(self):
+        result = os.path.split(self._config_file)[0]
+        return result
+
+    @property
+    def KlipperConfig(self):
+        result = self._config_file
+        return result
+
 class Moonraker():
     def __init__(self):
         self.connection = APIConnection()
