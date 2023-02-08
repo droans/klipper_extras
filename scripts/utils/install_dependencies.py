@@ -53,4 +53,3 @@ class PythonDependencyInstaller(object):
         install_command = [self._python_exec, '-m', 'pip', 'install'] + requirements
         print('Installing %s...' % ', '.join(requirements))
         subprocess.call(install_command)
-        sys.exit()

@@ -189,6 +189,7 @@ class Installer():
             requirements = py_reqs
         )
         req_installer.InstallRequirements()
+        return
         
     def screen_template(self, menu_name):
         hdr_mid = 37
@@ -379,6 +380,7 @@ def check_installer_requirements():
             requirements = py_reqs
         )
         req_installer.InstallRequirements()
+        sys.exit()
 
 def main():
     check_installer_requirements()
