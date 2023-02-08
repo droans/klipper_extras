@@ -57,17 +57,17 @@ def ExtendedMacroFiles(initial_file_path):
         files=[
             File(
                 file_name='delayed_extended.py',
-                action=FileActions.SOFT_LINK,
+                action=FileActions.HARD_LINK,
                 action_path='klippy_extras'
             ),
             File(
                 file_name='extended_macro.py',
-                action=FileActions.SOFT_LINK,
+                action=FileActions.HARD_LINK,
                 action_path='klippy_extras'
             ),
             File(
                 file_name='extended_template.py',
-                action=FileActions.SOFT_LINK,
+                action=FileActions.HARD_LINK,
                 action_path='klippy_extras'
             )
         ],
