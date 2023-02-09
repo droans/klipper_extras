@@ -1,5 +1,5 @@
 import sys
-import os 
+import os
 import json
 import subprocess
 
@@ -7,7 +7,8 @@ from utils.enums import PythonVersion
 from utils.install_dependencies import PythonDependencyInstaller
 from utils.helpers import Input, GetPythonVersion
 from utils.custom.installer import InstallerRequirements
-from utils.custom.extended_macro import ExtendedMacroRequirements, ExtendedMacroFiles
+from utils.custom.extended_macro import ExtendedMacroRequirements, ExtendedMacroFiles, SaveRequirementsFile
+from utils.enums import FileActions
 
 try:
     import requests
@@ -108,7 +109,7 @@ class Config(object):
         if directory[:-1] != '/':
             directory = directory + '/'
         self._klipper_path = directory
-        
+
     @property
     def ExtrasDir(self):
         if self._klippy_extra_dir is None:
@@ -187,7 +188,7 @@ class Installer():
         )
         req_installer.InstallRequirements()
         return
-        
+
     def screen_template(self, menu_name):
         hdr_mid = 37
         menu_mid = int(len(menu_name) / 2)
@@ -214,15 +215,15 @@ class Installer():
         klippy_dir = self.report_setting(self.Config.EnvDirectory)
         if self.Config.PythonVersion == PythonVersion.PYTHON2:
             klippy_python = 'python2'
-        elif self.Config.PythonVersion == 'python3':
+        elif self.Config.PythonVersion == PythonVersion.PYTHON3:
             klippy_python = 'python3'
         else:
             klippy_python = None
         klippy_python = self.report_setting(klippy_python)
-        
+
         klipper_dir = self.report_setting(self.Config.KlipperDir)
         klipper_mod_dir = self.report_setting(self.Config.ExtrasDir)
-        
+
         self._clear_screen()
         self.screen_template('Main Menu')
         print('''
@@ -244,7 +245,7 @@ class Installer():
             * Base Directory: %s
             * Extras Module Directory: %s
         ''' % (
-            self.Moonraker.connection.base_url, 
+            self.Moonraker.connection.base_url,
             self.Moonraker.connection.api_path,
             klippy_dir,
             klippy_python,
@@ -268,7 +269,7 @@ class Installer():
             self.MainMenu()
         else:
             val()
-        
+
     def InstallMenu(self):
         if self.Config.Config is None or self.Config.Config == {}:
             self.LoadConfig()
@@ -280,17 +281,18 @@ class Installer():
         script_path = os.path.normpath(os.path.dirname(__file__))
         macro_path = os.path.join(script_path, os.pardir, 'extended_macro')
         macro_path = os.path.normpath(macro_path)
-        f = ExtendedMacroFiles(macro_path)
+        f = ExtendedMacroFiles(macro_path, FileActions.SOFT_LINK)
         f.AddActionPathVariable(
             variable = 'klippy_extras',
             value = self.Config.ExtrasDir
         )
         f.ProcessFiles()
+        SaveRequirementsFile(self.Config.PythonVersion)
 
     def SettingsMenu(self):
         self._clear_screen()
         self.screen_template('Settings')
-        
+
         print( '''
 
         1) Change Moonraker URL
@@ -333,7 +335,7 @@ class Installer():
         if len(result):
             self.Moonraker.connection.base_url = result
         self.SettingsMenu()
-    
+
     def SetKlippyEnvDir(self):
         def_val = self.report_setting(self.Config.EnvDirectory)
         result = self.base_settings_setter(def_val, 'Set Klippy Environment Directory','New Directory')
@@ -356,17 +358,17 @@ class Installer():
         }
         result = Input('New URL (%s): ' % self.report_setting(self.Config.PythonVersion))
         val = vals.get(result, None)
-        if val is not None: 
+        if val is not None:
             self.Config.PythonVersion = val
         self.SettingsMenu()
-    
+
     def SetKlipperBaseDir(self):
         def_val = self.report_setting(self.Config.KlipperDir)
         result = self.base_settings_setter(def_val, 'Set Klipper Base Directory','New Directory')
         if len(result):
             self.Config.KlipperDir = result
         self.SettingsMenu()
-    
+
     def SetKlipperExtrasDir(self):
         def_val = self.report_setting(self.Config.ExtrasDir)
         result = self.base_settings_setter(def_val, 'Set Klipper Extras Module Directory','New Directory')
@@ -378,7 +380,7 @@ def check_installer_requirements():
     if not installer_reqs_installed:
         print('Missing installer requirements. Press Enter to install or Ctrl+C to cancel')
         Input()
-        
+
         py_exec = python_executable()
         py_ver = GetPythonVersion()
         py_reqs = InstallerRequirements(py_ver)

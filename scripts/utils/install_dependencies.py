@@ -1,5 +1,5 @@
 import subprocess
-import os 
+import os
 import sys
 from .enums import PythonVersion
 from .custom.constructors import Requirements
@@ -10,7 +10,7 @@ class PythonDependencyInstaller(object):
             self._python_exec= os.sys.executable
         else:
             self._python_exec = python_executable_path
-        
+
         if python_version is None:
             v = sys.version
             if v[0] == '2':
@@ -19,15 +19,15 @@ class PythonDependencyInstaller(object):
                 self._python_version = PythonVersion.PYTHON3
         else:
             self._python_version = python_version
-            
+
         if not isinstance(requirements, Requirements) and not issubclass(requirements, Requirements):
             raise TypeError('Expected instance of `Requirements` for requirements, got %s' % requirements)
-        self._requirements = requirements      
+        self._requirements = requirements
 
     @property
     def PythonVersion(self):
         return self._python_version
-    
+
     @PythonVersion.setter
     def PythonVersion(self, version):
         self._python_version = version
@@ -35,7 +35,7 @@ class PythonDependencyInstaller(object):
     @property
     def PythonExecutablePath(self):
         return self._python_exec
-    
+
     @PythonExecutablePath.setter
     def PythonExecutablePath(self, path):
         self._python_exec = path

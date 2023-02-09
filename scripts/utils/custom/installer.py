@@ -26,15 +26,15 @@ class InstallerRequirements(Requirements):
     @property
     def Python2Modules(self):
         return self._python_2_mods
-    
+
     @property
     def Python2Apt(self):
         return self._python_2_apt
-    
+
     @property
     def Python3Apt(self):
         return self._python_3_apt
-    
+
     @property
     def Python(self):
         if self._python_version == PythonVersion.PYTHON2:

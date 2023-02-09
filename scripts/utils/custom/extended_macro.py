@@ -6,7 +6,7 @@ class ExtendedMacroRequirements(Requirements):
             super(ExtendedMacroRequirements,self).__init__(python_version)
         else:
             super().__init__(python_version)
-            
+
         self._python_2_mods = [
             'pyyaml==3.13',
             'numpy==1.16.6',
@@ -29,15 +29,15 @@ class ExtendedMacroRequirements(Requirements):
     @property
     def Python2Modules(self):
         return self._python_2_mods
-    
+
     @property
     def Python2Apt(self):
         return self._python_2_apt
-    
+
     @property
     def Python3Apt(self):
         return self._python_3_apt
-    
+
     @property
     def Python(self):
         if self._python_version == PythonVersion.PYTHON2:
@@ -52,25 +52,57 @@ class ExtendedMacroRequirements(Requirements):
         elif self._python_version == PythonVersion.PYTHON3:
             return self._python_3_apt
 
-def ExtendedMacroFiles(initial_file_path):
-    result = Files(
-        files=[
-            File(
-                file_name='delayed_extended.py',
-                action=FileActions.HARD_LINK,
-                action_path='klippy_extras'
-            ),
-            File(
-                file_name='extended_macro.py',
-                action=FileActions.HARD_LINK,
-                action_path='klippy_extras'
-            ),
-            File(
-                file_name='extended_template.py',
-                action=FileActions.HARD_LINK,
-                action_path='klippy_extras'
-            )
-        ],
-        initial_file_path = initial_file_path
-    )
+def ExtendedMacroFiles(initial_file_path, type_link):
+    if type_link == FileActions.HARD_LINK:
+        result = Files(
+            files=[
+                File(
+                    file_name='delayed_extended.py',
+                    action=FileActions.HARD_LINK,
+                    action_path='klippy_extras'
+                ),
+                File(
+                    file_name='extended_macro.py',
+                    action=FileActions.HARD_LINK,
+                    action_path='klippy_extras'
+                ),
+                File(
+                    file_name='extended_template.py',
+                    action=FileActions.HARD_LINK,
+                    action_path='klippy_extras'
+                )
+            ],
+            initial_file_path = initial_file_path
+        )
+    if type_link == FileActions.SOFT_LINK:
+        result = Files(
+            files=[
+                File(
+                    file_name='delayed_extended.py',
+                    action=FileActions.SOFT_LINK,
+                    action_path='klippy_extras'
+                ),
+                File(
+                    file_name='extended_macro.py',
+                    action=FileActions.SOFT_LINK,
+                    action_path='klippy_extras'
+                ),
+                File(
+                    file_name='extended_template.py',
+                    action=FileActions.SOFT_LINK,
+                    action_path='klippy_extras'
+                )
+            ],
+            initial_file_path = initial_file_path
+        )
     return result
+
+def SaveRequirementsFile(py_ver):
+    obj = ExtendedMacroRequirements(py_ver)
+    mods = []
+    f = open("/home/pi/klipper_extras/extended_macro/requirements.txt", "w")
+    mods = obj.Python
+    for mod in range(len(mods)-1):
+        f.write(mods[mod]+",\n")
+    f.write(mods[mod+1]+"\n")
+    f.close()

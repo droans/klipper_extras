@@ -9,19 +9,19 @@ class Requirements(object):
     @property
     def Python3Modules(self):
         raise NotImplementedError
-    
+
     @property
     def Python2Modules(self):
         raise NotImplementedError
-    
+
     @property
     def Python2Apt(self):
         raise NotImplementedError
-    
+
     @property
     def Python3Apt(self):
         raise NotImplementedError
-    
+
     @property
     def Python(self):
         raise NotImplementedError
@@ -32,10 +32,10 @@ class Requirements(object):
 
 class File(object):
     def __init__(self, file_name = None, action = None, action_path = None):
-        self._file_name = file_name        
+        self._file_name = file_name
         self._action = action
         self._action_path = action_path
-    
+
     @property
     def Name(self):
         return self._file_name
@@ -68,7 +68,7 @@ class Files(object):
             if not isinstance(file,File) and not issubclass(file, File):
                 raise TypeError('Expected instance `file`, got type `%s`' % file)
             file.Name = os.path.join(initial_file_path, file.Name)
-        
+
         self._files = files
         self._action_path_variables = action_path_variables
 
@@ -82,7 +82,7 @@ class Files(object):
     @property
     def AllFiles(self):
         return self._files
-        
+
     @property
     def FileNames(self):
         result = [file.Name for file in self._files]
@@ -91,13 +91,13 @@ class Files(object):
     def AddFile(self, file):
         if not isinstance(file,File) and not issubclass(file, File):
             raise TypeError('Expected instance `file`, got type `%s`' % file)
-        
+
         self._files.append(files)
 
     @property
     def ActionPathVariables(self):
         return self._action_path_variables
-    
+
     def AddActionPathVariable(self, variable, value):
         self._action_path_variables[variable] = value
 
@@ -151,4 +151,3 @@ class Files(object):
                 return
         shutil.move(file.Name, path)
 
-    

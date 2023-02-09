@@ -35,9 +35,9 @@ If necessary, the script will also install `requests` and `pathlib`. You will th
 
 6. Select `Load Config From Moonraker`. As Moonraker should be running on the same machine or at least the same network, this should take less than one second to complete. If there is a delay, either the URL you are using is wrong or Moonraker is not running.
 
-7. If the config options listed are correct, select Install. At this point, all dependencies are installed to the Klippy Python environment and the modules will be soft-linked to the Klipper Extras Directory. 
+7. If the config options listed are correct, select Install. At this point, all dependencies are installed to the Klippy Python environment and the modules will be soft-linked to the Klipper Extras Directory.
 
-8. If the modules already exist (eg, old install), you will be prompted on whether the old files should be kept, replaced, or if you want to cancel the installation. If the files are symlinked, you usually are fine keeping them. If not, you will need to replace them. 
+8. If the modules already exist (eg, old install), you will be prompted on whether the old files should be kept, replaced, or if you want to cancel the installation. If the files are symlinked, you are usually fine keeping them. If not, you will need to replace them.
 
 ```
 ${KLIPPY_ENV}/pip install -r ${HOME}/requirements.txt
@@ -54,8 +54,8 @@ ${KLIPPY_ENV}/pip install -r ${HOME}/requirements.txt
 
 # The path to your extended_template config file.
 # If you do not plan on creating your own Python scripts, this is not required.
-# See example/function_config.yaml for the configuration schema. 
-path: /home/pi/printer_data/functions/config.yaml    
+# See example/function_config.yaml for the configuration schema.
+path: /home/pi/printer_data/functions/config.yaml
 ```
 
 ---
@@ -63,13 +63,13 @@ path: /home/pi/printer_data/functions/config.yaml
 
 *See the examples folder for more guidance.*
 
-1. Create your Python script(s) with the function(s) you intend to use and add them to your Extended Template `config.yaml`. 
+1. Create your Python script(s) with the function(s) you intend to use and add them to your Extended Template `config.yaml`.
 2. Reference them in your Klipper G-Code macro. They will be usable just like any other object.
 
 ---
 **Automating Updates**
 
-Add the section below to your `moonraker.conf`. 
+Add the section below to your `moonraker.conf`.
 
 ```BASH
 [update_manager extended_macro]
@@ -79,9 +79,9 @@ path: ~/klipper_extras
 origin: https://github.com/droans/klipper_extras.git
 env: ~/klippy-env/bin/python
 requirements: extended_macro/requirements.txt
+install_script: extended_macro/install.sh
 is_system_service: False
-managed_services: 
-    klipper
+managed_services: klipper
 ```
 
 
@@ -91,17 +91,17 @@ managed_services:
 
 This module will add all Python functions in your configuration to the Jinja globals namespace. As such, they will be accessible like any other available function or object. See the examples folder for more guidance.
 
-When defining the macro, use `extended_macro` as the config name instead of `gcode_macro` (eg, use `[extended_macro MY_MACRO]` instead of `[gcode_macro MY_MACRO]`). 
+When defining the macro, use `extended_macro` as the config name instead of `gcode_macro` (eg, use `[extended_macro MY_MACRO]` instead of `[gcode_macro MY_MACRO]`).
 
 ---
 
 ## Defaults
 
-`extended_macro` comes with many default functions which do not need to be added or declared by the user. 
+`extended_macro` comes with many default functions which do not need to be added or declared by the user.
 
 *Custom Utility Functions*:
 
-`update_gcode_variable(macro_name: str, variable: str, value: Any)`: Update a G-Code variable for any macro. Unlike `SET_GCODE_VARIABLE`, allows for non-literals to be passed and updated. 
+`update_gcode_variable(macro_name: str, variable: str, value: Any)`: Update a G-Code variable for any macro. Unlike `SET_GCODE_VARIABLE`, allows for non-literals to be passed and updated.
 
 `update_dict(dict: dict, keys: Union[list, tuple, set, str], value: Any)`: Update the value of a dictionary. Allows for a nested value to be updated if a list, tuple, or set is passed for `keys`.
 

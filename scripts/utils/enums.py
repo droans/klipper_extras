@@ -1,6 +1,6 @@
 class PythonVersion:
-    PYTHON2 = 1
-    PYTHON3 = 2
+    PYTHON2 = 2
+    PYTHON3 = 3
 
 class FileActions:
     SOFT_LINK = 1
