@@ -114,7 +114,7 @@ class Files(object):
 
     def _ask_and_overwrite(self, path):
         print('File %s already exists. Overwrite? (Y/N/C)' % path)
-        print('Note: If current file is a symlink and points back to extended_macro/file_name.py, there is no need to overwrite')
+        print('Note: If current file is a symlink and points back to extended_macro/%s, there is no need to overwrite' % os.path.split(path)[-1])
         result = Input()
 
         if result.lower() == 'y':
