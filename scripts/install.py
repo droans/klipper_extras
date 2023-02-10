@@ -10,113 +10,13 @@ from utils.custom.install_reqs import InstallerRequirements
 from utils.custom.extended_macro import ExtendedMacroRequirements, ExtendedMacroFiles
 from utils.enums import FileActions
 from utils.moonraker import Moonraker
+from utils.config import Config
 
 try:
     import requests
     installer_reqs_installed = True
 except:
     installer_reqs_installed = False
-
-class Config(object):
-    def __init__(self, config={}):
-        self.load_config(config)
-        self._py_version = None
-
-    def load_config(self, config):
-        self._config = config
-        self._config_file = config.get('config_file', None)
-        self._klipper_path = config.get('klipper_path', None)
-        self._python_path = config.get('python_path', None)
-
-        if self._klipper_path is not None:
-            self._klippy_extra_dir = self._klipper_path + '/klippy/extras'
-        else:
-            self._klippy_extra_dir = None
-
-    @property
-    def Config(self):
-        return self._config
-
-    @property
-    def EnvDirectory(self):
-        if self._python_path is None:
-            return None
-        return os.path.dirname(self._python_path)
-
-    @EnvDirectory.setter
-    def EnvDirectory(self, directory):
-        if directory[:-1] != '/':
-            directory = directory + '/'
-        self._python_path = directory
-
-    @property
-    def PythonEnvBinary(self):
-        return self._python_path
-
-    @property
-    def PythonVersion(self):
-        if self._py_version is not None:
-            return self._py_version
-
-        env_dir = self.EnvDirectory
-        if env_dir is None:
-            return None
-
-        files = os.listdir(env_dir)
-        py2_path = os.path.join(env_dir, 'python2')
-        py3_path = os.path.join(env_dir, 'python3')
-
-        if os.path.exists(py2_path):
-            if os.path.realpath(py2_path) == self.PythonEnvBinary:
-                return PythonVersion.PYTHON2
-            else:
-                return None
-        elif os.path.exists(py2_path):
-            if os.path.realpath(py2_path) == self.PythonEnvBinary:
-                return PythonVersion.PYTHON2
-            else:
-                return None
-        else:
-            return None
-
-    @PythonVersion.setter
-    def PythonVersion(self, version):
-        self._py_version = version
-
-    @property
-    def KlipperDir(self):
-        return self._klipper_path
-
-    @KlipperDir.setter
-    def KlipperDir(self, directory):
-        if directory[:-1] != '/':
-            directory = directory + '/'
-        self._klipper_path = directory
-
-    @property
-    def ExtrasDir(self):
-        if self._klippy_extra_dir is None:
-            return None
-        if os.path.exists(self._klippy_extra_dir):
-            return self._klippy_extra_dir
-        else:
-            return None
-
-    @ExtrasDir.setter
-    def ExtrasDir(self, directory):
-        if directory[:-1] != '/':
-            directory = directory + '/'
-        self._klippy_extra_dir = directory
-
-    @property
-    def ConfigDirectory(self):
-        result = os.path.split(self._config_file)[0]
-        return result
-
-    @property
-    def KlipperConfig(self):
-        result = self._config_file
-        return result
 
 class Installer():
     def __init__(self):
