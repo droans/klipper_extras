@@ -103,7 +103,6 @@ class Files(object):
         self._action_path_variables[variable] = value
 
     def ProcessFiles(self):
-        print(self._action_path_variables)
         for f in self._files:
             action = self._actions[f.Action]
             print('Processing %s' % f.Name)
