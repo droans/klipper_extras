@@ -69,22 +69,7 @@ path: /home/pi/printer_data/functions/config.yaml
 ---
 **Automating Updates**
 
-Add the section below to your `moonraker.conf`.
-
-```BASH
-[update_manager extended_macro]
-type: git_repo
-primary_branch: main
-path: ~/klipper_extras
-origin: https://github.com/droans/klipper_extras.git
-env: ~/klippy-env/bin/python
-requirements: extended_macro/requirements.txt
-install_script: extended_macro/install.sh
-is_system_service: False
-managed_services: klipper
-```
-
-
+The install script will request permission to automate updates. If you choose to allow, it will automatically add itself to Moonraker's update manager.
 
 ---
 ## Usage:
