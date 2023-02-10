@@ -60,6 +60,27 @@ class Installer():
             result = os.path.join(reqs_path,'requirements-python3.txt')
         return result
 
+    def AddMoonrakerUpdater(self):
+        script_path = os.path.normpath(os.path.dirname(__file__))
+        updater_path = os.path.join(script_path, os.path.pardir, 'extended_macro', 'extended_macro_updater.conf')
+
+        script_path = os.path.normpath(os.path.dirname(__file__))
+        reqs_path = os.path.join('extended_macro', 'requirements')
+
+        if self.Config.PythonVersion == PythonVersion.PYTHON2:
+            reqs_path = os.path.join(reqs_path, 'requirements-python2.txt')
+        elif self.Config.PythonVersion == PythonVersion.PYTHON3:
+            reqs_path = os.path.join(reqs_path, 'requirements-python3.txt')
+
+        with open(updater_path, 'r') as f:
+            lines = f.readlines()
+        
+        req_string = '\nrequirements: %s' % reqs_path
+        lines.append(req_string)
+        print(lines)
+        Input()
+        self.Config.UpdateMoonrakerConfig(lines)
+
     def screen_template(self, menu_name):
         hdr_mid = 37
         menu_mid = int(len(menu_name) / 2)
@@ -156,6 +177,15 @@ class Installer():
             value = self.Config.ExtrasDir
         )
         f.ProcessFiles()
+
+        self._clear_screen()
+        self.screen_template("Install Finished!")
+        result = Input('Would you like to set up Moonraker updates? Y/n ')
+
+        if result.lower() == 'y':
+            self.AddMoonrakerUpdater()
+
+        self.MainMenu()
 
     def SettingsMenu(self):
         self._clear_screen()
