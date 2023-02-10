@@ -1,10 +1,13 @@
 import requests
 import json
 
+class Const:
+    PRINTER_INFO_API_PATH = '/printer/info'
+    SERVER_CONFIG_API_PATH = '/server/config'
+
 class APIConnection(object):
     def __init__(self):
         self._url = 'http://localhost:80'
-        self._api_path = '/printer/info'
 
     @property
     def base_url(self):
@@ -15,26 +18,27 @@ class APIConnection(object):
         self._url = url
 
     @property
-    def api_path(self):
-        return self._api_path
-
-    @api_path.setter
-    def api_path(self, path):
-        self._api_path = path
+    def PrinterConnection(self):
+        api_path = Const.PRINTER_INFO_API_PATH
+        return requests.get(self.base_url + api_path)
 
     @property
-    def url(self):
-        return self._url + self._api_path
-
-    def Connect(self):
-        return requests.get(self.url)
+    def ServerConfigConnection(self):
+        api_path = Const.SERVER_CONFIG_API_PATH
+        return requests.get(self.base_url + api_path)
 
 class Moonraker():
     def __init__(self):
         self.connection = APIConnection()
+
     def get_config(self):
-        print('Getting config....')
-        result = self.connection.Connect()
+        result = {}
+        result['printer'] = self.get_printer_config()
+        result['server'] = self.get_server_config()
+
+        return result
+    def get_printer_config(self):
+        result = self.connection.PrinterConnection
 
         if result.status_code != 200:
             print('Moonraker is not accessible at %s' % self.url)
@@ -45,11 +49,32 @@ class Moonraker():
                 sys.exit()
             elif len(url):
                 self.url = url
-                return self.get_config()
+                return self.get_printer_config()
             else:
-                return self.get_config()
+                return self.get_printer_config()
 
         unloaded_config = result.text
         config = json.loads(unloaded_config)['result']
-        self.config = config
+        self._printer_config = config
+        return config
+
+    def get_server_config(self):
+        result = self.connection.ServerConfigConnection
+
+        if result.status_code != 200:
+            print('Moonraker is not accessible at %s' % self.url)
+            print('Received error code: %s' % result.status_code)
+            print('Type in the correct URL below. You can also press enter to retry with the same URL or `q` to quit.')
+            url = Input('URL (%s): ' % self.url)
+            if url == 'q':
+                sys.exit()
+            elif len(url):
+                self.url = url
+                return self.get_server_config()
+            else:
+                return self.get_server_config()
+
+        unloaded_config = result.text
+        config = json.loads(unloaded_config)['result']
+        self._printer_config = config
         return config

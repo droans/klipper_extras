@@ -97,7 +97,6 @@ class Installer():
 
         Moonraker:
             * URL: %s
-            * API Endpoint: %s
         Klippy Environment:
             * Directory: %s
             * Python Version: %s
@@ -107,7 +106,6 @@ class Installer():
             * Extras Module Directory: %s
         ''' % (
             self.Moonraker.connection.base_url,
-            self.Moonraker.connection.api_path,
             klippy_dir,
             klippy_python,
             klipper_dir,

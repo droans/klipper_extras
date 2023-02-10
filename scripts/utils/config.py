@@ -8,9 +8,10 @@ class Config(object):
 
     def load_config(self, config):
         self._config = config
-        self._config_file = config.get('config_file', None)
-        self._klipper_path = config.get('klipper_path', None)
-        self._python_path = config.get('python_path', None)
+        printer_config = config.get('printer', {})
+        self._config_file = printer_config.get('config_file', None)
+        self._klipper_path = printer_config.get('klipper_path', None)
+        self._python_path = printer_config.get('python_path', None)
 
         if self._klipper_path is not None:
             self._klippy_extra_dir = self._klipper_path + '/klippy/extras'
