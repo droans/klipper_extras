@@ -1,6 +1,7 @@
 from ..enums import PythonVersion, FileActions
 from ..helpers import Input
 import os
+import sys
 import shutil
 class Requirements(object):
     def __init__(self, python_version):
