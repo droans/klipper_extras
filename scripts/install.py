@@ -38,9 +38,9 @@ class Installer():
 
         py_exec = self.Config.PythonEnvBinary
         py_ver = self.Config.PythonVersion
-        script_path = os.path.normpath(os.path.dirname(__file__))
-        py2_reqs_path = os.path.join(script_path, os.path.pardir, 'extended_macro', 'requirements','requirements-python2.txt')
-        py3_reqs_path = os.path.join(script_path, os.path.pardir, 'extended_macro', 'requirements','requirements-python3.txt')
+
+        py2_reqs_path = self.get_requirements_file(PythonVersion.PYTHON2)
+        py3_reqs_path = self.get_requirements_file(PythonVersion.PYTHON3)
         py_reqs = ExtendedMacroRequirements(py_ver, py2_reqs_path, py3_reqs_path)
         req_installer = PythonDependencyInstaller(
             python_version = py_ver,
@@ -49,6 +49,16 @@ class Installer():
         )
         req_installer.InstallRequirements()
         return
+
+    def get_requirements_file(self, python_version):
+        script_path = os.path.normpath(os.path.dirname(__file__))
+        reqs_path = os.path.join(script_path, os.path.pardir, 'extended_macro', 'requirements')
+        reqs_path = os.path.normpath(reqs_path)
+        if python_version == PythonVersion.PYTHON2:
+            result = os.path.join(reqs_path,'requirements-python2.txt')
+        else:
+            result = os.path.join(reqs_path,'requirements-python3.txt')
+        return result
 
     def screen_template(self, menu_name):
         hdr_mid = 37
