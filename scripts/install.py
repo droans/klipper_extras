@@ -7,7 +7,7 @@ from utils.enums import PythonVersion
 from utils.install_dependencies import PythonDependencyInstaller
 from utils.helpers import Input, GetPythonVersion
 from utils.custom.install_reqs import InstallerRequirements
-from utils.custom.extended_macro import ExtendedMacroRequirements, ExtendedMacroFiles, SaveRequirementsFile
+from utils.custom.extended_macro import ExtendedMacroRequirements, ExtendedMacroFiles
 from utils.enums import FileActions
 
 try:
@@ -197,6 +197,9 @@ class Installer():
             requirements = py_reqs
         )
         req_installer.InstallRequirements()
+        script_path = os.path.normpath(os.path.dirname(__file__))
+        requirements_path = os.path.join(script_path, 'requirements.txt')
+        req_installer.SaveRequirementsToFile(requirements_path)
         return
 
     def screen_template(self, menu_name):
@@ -297,7 +300,6 @@ class Installer():
             value = self.Config.ExtrasDir
         )
         f.ProcessFiles()
-        SaveRequirementsFile(self.Config.PythonVersion)
 
     def SettingsMenu(self):
         self._clear_screen()

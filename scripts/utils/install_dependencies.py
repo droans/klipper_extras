@@ -53,3 +53,10 @@ class PythonDependencyInstaller(object):
         install_command = [self._python_exec, '-m', 'pip', 'install'] + requirements
         print('Installing %s...' % ', '.join(requirements))
         subprocess.call(install_command)
+
+    def SaveRequirementsToFile(self, path):
+        reqs = '\n'.join(self.Requirements.Python)
+        with open(path, 'w') as f:
+            f.write(reqs)
+            f.close()
+        return

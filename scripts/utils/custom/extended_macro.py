@@ -74,13 +74,3 @@ def ExtendedMacroFiles(initial_file_path, link_type = FileActions.SOFT_LINK):
         initial_file_path = initial_file_path
     )
     return result
-
-def SaveRequirementsFile(py_ver):
-    obj = ExtendedMacroRequirements(py_ver)
-    mods = []
-    f = open("/home/pi/klipper_extras/extended_macro/requirements.txt", "w")
-    mods = obj.Python
-    for mod in range(len(mods)-1):
-        f.write(mods[mod]+",\n")
-    f.write(mods[mod+1]+"\n")
-    f.close()
