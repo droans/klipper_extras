@@ -190,16 +190,16 @@ class Installer():
 
         py_exec = self.Config.PythonEnvBinary
         py_ver = self.Config.PythonVersion
-        py_reqs = ExtendedMacroRequirements(py_ver)
+        script_path = os.path.normpath(os.path.dirname(__file__))
+        py2_reqs_path = os.path.join(script_path, os.path.pardir, 'extended_macro', 'requirements','requirements-python2.txt')
+        py3_reqs_path = os.path.join(script_path, os.path.pardir, 'extended_macro', 'requirements','requirements-python3.txt')
+        py_reqs = ExtendedMacroRequirements(py_ver, py2_reqs_path, py3_reqs_path)
         req_installer = PythonDependencyInstaller(
             python_version = py_ver,
             python_executable_path = py_exec,
             requirements = py_reqs
         )
         req_installer.InstallRequirements()
-        script_path = os.path.normpath(os.path.dirname(__file__))
-        requirements_path = os.path.join(script_path, 'requirements.txt')
-        req_installer.SaveRequirementsToFile(requirements_path)
         return
 
     def screen_template(self, menu_name):

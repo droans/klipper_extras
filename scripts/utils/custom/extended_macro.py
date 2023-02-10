@@ -1,24 +1,14 @@
 from .constructors import Requirements, File, Files
 from ..enums import FileActions, PythonVersion
 class ExtendedMacroRequirements(Requirements):
-    def __init__(self, python_version):
+    def __init__(self, python_version, python2_requirements_file_path, python3_requirements_file_path):
         if python_version == PythonVersion.PYTHON2:
             super(ExtendedMacroRequirements,self).__init__(python_version)
         else:
             super().__init__(python_version)
 
-        self._python_2_mods = [
-            'pyyaml==3.13',
-            'numpy==1.16.6',
-            'pandas==0.23.4',
-            'flatten-dict==0.4.2'
-        ]
-        self._python_3_mods = [
-            'pyyaml==5.3.1',
-            'numpy==1.24.1',
-            'pandas==1.5.3',
-            'flatten-dict==0.4.2'
-        ]
+        self._python_2_mods = self._get_reqs_from_file(python2_requirements_file_path)
+        self._python_3_mods = self._get_reqs_from_file(python3_requirements_file_path)
         self._python_3_apt = []
         self._python_2_apt = []
 
@@ -51,6 +41,12 @@ class ExtendedMacroRequirements(Requirements):
             return self._python_2_apt
         elif self._python_version == PythonVersion.PYTHON3:
             return self._python_3_apt
+
+    def _get_reqs_from_file(self, file_path):
+        with open(file_path, 'r') as f:
+            reqs = f.read()
+        reqs = reqs.split('\n')
+        return reqs
 
 def ExtendedMacroFiles(initial_file_path, link_type = FileActions.SOFT_LINK):
     result = Files(
