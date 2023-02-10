@@ -112,16 +112,14 @@ class Config(object):
         result = os.path.join(config_dir, moonraker_conf)
         if not os.path.exists(result):
             raise FileNotFoundError()
-        return moonraker_conf
+        return result
 
     def UpdateMoonrakerConfig(self, update_list):
         fname = self.MoonrakerConfPath
-        update_string = '\n'.join(update_list)
         with open(fname, 'r') as f:
-            conf = f.read()
+            conf = f.readlines()
 
-        conf = conf + update_string
+        conf = conf + ['\n'] + update_list
         with open(fname, 'w') as f:
-            f.write(conf)
-        
+            f.writelines(conf)
         return
