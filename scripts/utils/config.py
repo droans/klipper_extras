@@ -102,3 +102,26 @@ class Config(object):
     def KlipperConfig(self):
         result = self._config_file
         return result
+
+    @property
+    def MoonrakerConfPath(self):
+        config_dir = self.ConfigDirectory
+        server_conf = self._config.get('server', None)
+        moonraker_conf = server_conf.get('files', None)[0]
+        moonraker_conf = moonraker_conf.get('filename', None)
+        result = os.path.join(config_dir, moonraker_conf)
+        if not os.path.exists(result):
+            raise FileNotFoundError()
+        return moonraker_conf
+
+    def UpdateMoonrakerConfig(self, update_list):
+        fname = self.MoonrakerConfPath
+        update_string = '\n'.join(update_list)
+        with open(fname, 'r') as f:
+            conf = f.read()
+
+        conf = conf + update_string
+        with open(fname, 'w') as f:
+            f.write(conf)
+        
+        return
