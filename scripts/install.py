@@ -90,10 +90,21 @@ class Config(object):
             return None
 
         files = os.listdir(env_dir)
-        if 'python3' in files:
-            return PythonVersion.PYTHON3
+        py2_path = os.path.join(env_dir, 'python2')
+        py3_path = os.path.join(env_dir, 'python3')
+
+        if os.path.exists(py2_path):
+            if os.path.realpath(py2_path) == self.PythonEnvBinary:
+                return PythonVersion.PYTHON2
+            else:
+                return None
+        elif os.path.exists(py2_path):
+            if os.path.realpath(py2_path) == self.PythonEnvBinary:
+                return PythonVersion.PYTHON2
+            else:
+                return None
         else:
-            return PythonVersion.PYTHON2
+            return None
 
     @PythonVersion.setter
     def PythonVersion(self, version):
