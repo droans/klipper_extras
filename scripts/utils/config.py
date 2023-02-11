@@ -48,19 +48,28 @@ class Config(object):
             return None
 
         files = os.listdir(env_dir)
+        #/home/pi/klippy-env/bin/python2
         py2_path = os.path.join(env_dir, 'python2')
+        #/home/pi/klippy-env/bin/python3
         py3_path = os.path.join(env_dir, 'python3')
 
-        if os.path.exists(py2_path):
-            if os.path.realpath(py2_path) == self.PythonEnvBinary:
-                return PythonVersion.PYTHON2
-            else:
-                return None
+        # if os.path.exists(py3_path):
+            # #/usr/bin/python3.9 == /home/pi/klippy-env/bin/python
+            # if os.path.realpath(py3_path) == self.PythonEnvBinary:
+                # return PythonVersion.PYTHON3
+            # else:
+                # return None
+        # elif os.path.exists(py2_path):
+            # if os.path.realpath(py2_path) == self.PythonEnvBinary:
+                # return PythonVersion.PYTHON2
+            # else:
+                # return None
+        # else:
+            # return None
+        if os.path.exists(py3_path):
+                return PythonVersion.PYTHON3
         elif os.path.exists(py2_path):
-            if os.path.realpath(py2_path) == self.PythonEnvBinary:
                 return PythonVersion.PYTHON2
-            else:
-                return None
         else:
             return None
 

@@ -74,11 +74,12 @@ class Installer():
 
         with open(updater_path, 'r') as f:
             lines = f.readlines()
-        
+
         req_string = '\nrequirements: %s' % reqs_path
         lines.append(req_string)
         print(lines)
-        Input()
+        # the call to Input is not need here, you already asked if they wanted to update moonraker.conf file
+        #Input()
         self.Config.UpdateMoonrakerConfig(lines)
 
     def screen_template(self, menu_name):
