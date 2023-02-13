@@ -131,13 +131,7 @@ class Installer():
         )
         f.ProcessFiles()
         self._clear_screen()
-        self.screen_template("Install Finished!")
-        if not self.Config.UpdateManagerExists:
-            result = Input('Would you like to set up Moonraker updates? Y/n ')
-            if result.lower() == 'y':
-                self.AddMoonrakerUpdater()
-        else:
-            Input('Type enter to continue.')
+        self.RestartServices()
 
         self.MainMenu()
 
@@ -185,6 +179,13 @@ class Installer():
         req_string = '\nrequirements: %s' % reqs_path
         lines.append(req_string)
         self.Config.UpdateMoonrakerConfig(lines)
+
+    def RestartServices(self):
+        print('Restarting Klippy...')
+        self.Moonraker.RestartKlippy()
+        print('Restarting Moonraker...')
+        self.Moonraker.RestartMoonraker()
+        return
 
     def SettingsMenu(self):
         self._clear_screen()

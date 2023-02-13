@@ -4,6 +4,8 @@ import json
 class Const:
     PRINTER_INFO_API_PATH = '/printer/info'
     SERVER_CONFIG_API_PATH = '/server/config'
+    PRINTER_RESTART_API_PATH = '/printer/restart'
+    SERVER_RESTART_API_PATH = '/server/restart'
 
 class APIConnection(object):
     def __init__(self):
@@ -78,3 +80,13 @@ class Moonraker():
         config = json.loads(unloaded_config)['result']
         self._printer_config = config
         return config
+
+    def RestartMoonraker(self):
+        url = self.connection.base_url + Const.SERVER_RESTART_API_PATH
+        requests.post(url)
+        return
+
+    def RestartKlippy(self):
+        url = self.connection.base_url + Const.PRINTER_RESTART_API_PATH
+        requests.post(url)
+        return
