@@ -1,5 +1,6 @@
 import os
 from .enums import PythonVersion
+from .helpers import GetPythonVersion
 
 class Config(object):
     def __init__(self, config={}):
@@ -42,36 +43,11 @@ class Config(object):
     def PythonVersion(self):
         if self._py_version is not None:
             return self._py_version
-
-        env_dir = self.EnvDirectory
-        if env_dir is None:
+        elif self.PythonEnvBinary is None:
             return None
-
-        files = os.listdir(env_dir)
-        #/home/pi/klippy-env/bin/python2
-        py2_path = os.path.join(env_dir, 'python2')
-        #/home/pi/klippy-env/bin/python3
-        py3_path = os.path.join(env_dir, 'python3')
-
-        # if os.path.exists(py3_path):
-            # #/usr/bin/python3.9 == /home/pi/klippy-env/bin/python
-            # if os.path.realpath(py3_path) == self.PythonEnvBinary:
-                # return PythonVersion.PYTHON3
-            # else:
-                # return None
-        # elif os.path.exists(py2_path):
-            # if os.path.realpath(py2_path) == self.PythonEnvBinary:
-                # return PythonVersion.PYTHON2
-            # else:
-                # return None
-        # else:
-            # return None
-        if os.path.exists(py3_path):
-                return PythonVersion.PYTHON3
-        elif os.path.exists(py2_path):
-                return PythonVersion.PYTHON2
-        else:
-            return None
+        python_binary = self.PythonEnvBinary
+        result = GetPythonVersion(python_binary)
+        return result
 
     @PythonVersion.setter
     def PythonVersion(self, version):
