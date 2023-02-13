@@ -174,6 +174,9 @@ class Installer():
 
     def AddUpdater(self):
         print('Checking Moonraker Update Manager...')
+        if self.Config.PythonVersion == PythonVersion.PYTHON2:
+            self._warn_unsupported_python()
+            return
         if not self.Config.UpdateManagerExists:
             result = Input('Would you like to add Extended Macro to your Moonraker Update Manager? Y/n ')
             if result.lower() == 'y':
@@ -203,6 +206,20 @@ class Installer():
         req_string = '\nrequirements: %s' % reqs_path
         lines.append(req_string)
         self.Config.UpdateMoonrakerConfig(lines)
+
+    def _warn_unsupported_python(self):
+            print('')
+            print('********     PLEASE READ:    ********')
+            print('')
+            print('You are using Python 2.x for your Klippy virtual environment.')
+            print('')
+            print('While this isn\'t currently an issue, support for Python 2 will end after v1.0 is released.')
+            print('Because of this, we will not be adding a section to your Moonraker config to enable updates.')
+            print('If you have added this section previously, please remove the entry from your config.')
+            print('')
+            print('Please consider updating your Klippy environment to Python 3 in the future.')
+            print('Press enter to continue...')
+            Input()
 
     def RestartServices(self):
         print('Restarting Klippy...')
