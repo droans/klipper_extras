@@ -116,22 +116,22 @@ class Installer():
     def InstallMenu(self):
         if self.Config.Config is None or self.Config.Config == {}:
             self.LoadConfig()
+
         self._clear_screen()
         self.screen_template('Installer: Dependencies')
         self.InstallRequirements()
+
         self._clear_screen()
         self.screen_template('Installer: Files')
-        script_path = os.path.normpath(os.path.dirname(__file__))
-        macro_path = os.path.join(script_path, os.pardir, 'extended_macro')
-        macro_path = os.path.normpath(macro_path)
-        f = ExtendedMacroFiles(macro_path, FileActions.SOFT_LINK)
-        f.AddActionPathVariable(
-            variable = 'klippy_extras',
-            value = self.Config.ExtrasDir
-        )
-        f.ProcessFiles()
+        self.InstallExtendedMacro()
+
         self._clear_screen()
+        self.screen_template("Finalizing Install...")
+        self.AddUpdater()
         self.RestartServices()
+
+        print('Install Finished!')
+        Input('Type enter to continue.')
 
         self.MainMenu()
 
@@ -150,6 +150,17 @@ class Installer():
         )
         req_installer.InstallRequirements()
         return
+    
+    def InstallExtendedMacro(self):
+        script_path = os.path.normpath(os.path.dirname(__file__))
+        macro_path = os.path.join(script_path, os.pardir, 'extended_macro')
+        macro_path = os.path.normpath(macro_path)
+        f = ExtendedMacroFiles(macro_path, FileActions.SOFT_LINK)
+        f.AddActionPathVariable(
+            variable = 'klippy_extras',
+            value = self.Config.ExtrasDir
+        )
+        f.ProcessFiles()
 
     def get_requirements_file(self, python_version):
         script_path = os.path.normpath(os.path.dirname(__file__))
@@ -161,6 +172,19 @@ class Installer():
             result = os.path.join(reqs_path,'requirements-python3.txt')
         return result
 
+    def AddUpdater(self):
+        print('Checking Moonraker Update Manager...')
+        if not self.Config.UpdateManagerExists:
+            result = Input('Would you like to add Extended Macro to your Moonraker Update Manager? Y/n ')
+            if result.lower() == 'y':
+                print('Adding entry to Update Manager for Extended Macro...')
+                self.AddMoonrakerUpdater()
+            else:
+                print('Update Manager entry not wanted.')
+        else:
+            print('Update Manager entry already exists.')
+        return
+    
     def AddMoonrakerUpdater(self):
         script_path = os.path.normpath(os.path.dirname(__file__))
         updater_path = os.path.join(script_path, os.path.pardir, 'extended_macro', 'extended_macro_updater.conf')
