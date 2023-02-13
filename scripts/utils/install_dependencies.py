@@ -2,7 +2,7 @@ import subprocess
 import os
 import sys
 from .enums import PythonVersion
-from .custom.constructors import Requirements
+from .custom.constructors import RequirementsConstructor
 
 class PythonDependencyInstaller(object):
     def __init__(self, requirements, python_version = None, python_executable_path = None):
@@ -20,8 +20,8 @@ class PythonDependencyInstaller(object):
         else:
             self._python_version = python_version
 
-        if not isinstance(requirements, Requirements) and not issubclass(requirements, Requirements):
-            raise TypeError('Expected instance of `Requirements` for requirements, got %s' % requirements)
+        if not isinstance(requirements, RequirementsConstructor) and not issubclass(requirements, RequirementsConstructor):
+            raise TypeError('Expected instance of `RequirementsConstructor` for requirements, got %s' % requirements)
         self._requirements = requirements
 
     @property

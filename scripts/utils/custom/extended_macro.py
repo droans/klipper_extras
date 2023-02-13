@@ -1,6 +1,6 @@
-from .constructors import Requirements, File, Files
+from .constructors import RequirementsConstructor, FileConstructor, FilesConstructor
 from ..enums import FileActions, PythonVersion
-class ExtendedMacroRequirements(Requirements):
+class ExtendedMacroRequirements(RequirementsConstructor):
     def __init__(self, python_version, python2_requirements_file_path, python3_requirements_file_path):
         if python_version == PythonVersion.PYTHON2:
             super(ExtendedMacroRequirements,self).__init__(python_version)
@@ -49,19 +49,19 @@ class ExtendedMacroRequirements(Requirements):
         return reqs
 
 def ExtendedMacroFiles(initial_file_path, link_type = FileActions.SOFT_LINK):
-    result = Files(
+    result = FilesConstructor(
         files=[
-            File(
+            FileConstructor(
                 file_name='delayed_extended.py',
                 action=link_type,
                 action_path='klippy_extras'
             ),
-            File(
+            FileConstructor(
                 file_name='extended_macro.py',
                 action=link_type,
                 action_path='klippy_extras'
             ),
-            File(
+            FileConstructor(
                 file_name='extended_template.py',
                 action=link_type,
                 action_path='klippy_extras'

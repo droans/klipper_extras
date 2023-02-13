@@ -1,7 +1,7 @@
-from .constructors import Requirements
+from .constructors import RequirementsConstructor
 from ..enums import PythonVersion
 
-class InstallerRequirements(Requirements):
+class InstallerRequirements(RequirementsConstructor):
     def __init__(self, python_version):
 
         if python_version == PythonVersion.PYTHON2:

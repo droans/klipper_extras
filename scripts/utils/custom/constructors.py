@@ -3,7 +3,7 @@ from ..helpers import Input
 import os
 import sys
 import shutil
-class Requirements(object):
+class RequirementsConstructor(object):
     def __init__(self, python_version):
         self._python_version = python_version
 
@@ -31,7 +31,7 @@ class Requirements(object):
     def Apt(self):
         raise NotImplementedError
 
-class File(object):
+class FileConstructor(object):
     def __init__(self, file_name = None, action = None, action_path = None):
         self._file_name = file_name
         self._action = action
@@ -63,10 +63,10 @@ class File(object):
         self._action_path = path
 
 
-class Files(object):
+class FilesConstructor(object):
     def __init__(self, files, initial_file_path, action_path_variables={}):
         for file in files:
-            if not isinstance(file,File) and not issubclass(file, File):
+            if not isinstance(file,FileConstructor) and not issubclass(file, FileConstructor):
                 raise TypeError('Expected instance `file`, got type `%s`' % file)
             file.Name = os.path.join(initial_file_path, file.Name)
 
