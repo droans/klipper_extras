@@ -23,62 +23,6 @@ class Installer():
         self.Moonraker = Moonraker()
         self.Config = Config()
 
-    def _clear_screen(self):
-        os.system('clear')
-
-    def LoadConfig(self):
-        conf = self.Moonraker.get_config()
-        self.Config.load_config(conf)
-
-    def LoadConfigAndMenu(self):
-        self.LoadConfig()
-        self.MainMenu()
-
-    def InstallRequirements(self):
-
-        py_exec = self.Config.PythonEnvBinary
-        py_ver = self.Config.PythonVersion
-
-        py2_reqs_path = self.get_requirements_file(PythonVersion.PYTHON2)
-        py3_reqs_path = self.get_requirements_file(PythonVersion.PYTHON3)
-        py_reqs = ExtendedMacroRequirements(py_ver, py2_reqs_path, py3_reqs_path)
-        req_installer = PythonDependencyInstaller(
-            python_version = py_ver,
-            python_executable_path = py_exec,
-            requirements = py_reqs
-        )
-        req_installer.InstallRequirements()
-        return
-
-    def get_requirements_file(self, python_version):
-        script_path = os.path.normpath(os.path.dirname(__file__))
-        reqs_path = os.path.join(script_path, os.path.pardir, 'extended_macro', 'requirements')
-        reqs_path = os.path.normpath(reqs_path)
-        if python_version == PythonVersion.PYTHON2:
-            result = os.path.join(reqs_path,'requirements-python2.txt')
-        else:
-            result = os.path.join(reqs_path,'requirements-python3.txt')
-        return result
-
-    def AddMoonrakerUpdater(self):
-        script_path = os.path.normpath(os.path.dirname(__file__))
-        updater_path = os.path.join(script_path, os.path.pardir, 'extended_macro', 'extended_macro_updater.conf')
-
-        script_path = os.path.normpath(os.path.dirname(__file__))
-        reqs_path = os.path.join('extended_macro', 'requirements')
-
-        if self.Config.PythonVersion == PythonVersion.PYTHON2:
-            reqs_path = os.path.join(reqs_path, 'requirements-python2.txt')
-        elif self.Config.PythonVersion == PythonVersion.PYTHON3:
-            reqs_path = os.path.join(reqs_path, 'requirements-python3.txt')
-
-        with open(updater_path, 'r') as f:
-            lines = f.readlines()
-
-        req_string = '\nrequirements: %s' % reqs_path
-        lines.append(req_string)
-        self.Config.UpdateMoonrakerConfig(lines)
-
     def screen_template(self, menu_name):
         hdr_mid = 37
         menu_mid = int(len(menu_name) / 2)
@@ -94,11 +38,12 @@ class Installer():
         ''' % menu_name
         print(screen_hdr)
 
-    def report_setting(self, val):
-        if val is None:
-            return '***Not Set***'
-        else:
-            return val
+    def _clear_screen(self):
+        os.system('clear')
+
+    def LoadConfig(self):
+        conf = self.Moonraker.get_config()
+        self.Config.load_config(conf)
 
     def MainMenu(self):
         x = self.Config
@@ -158,6 +103,16 @@ class Installer():
         else:
             val()
 
+    def report_setting(self, val):
+        if val is None:
+            return '***Not Set***'
+        else:
+            return val
+
+    def LoadConfigAndMenu(self):
+        self.LoadConfig()
+        self.MainMenu()
+
     def InstallMenu(self):
         if self.Config.Config is None or self.Config.Config == {}:
             self.LoadConfig()
@@ -185,6 +140,51 @@ class Installer():
             Input('Type enter to continue.')
 
         self.MainMenu()
+
+    def InstallRequirements(self):
+
+        py_exec = self.Config.PythonEnvBinary
+        py_ver = self.Config.PythonVersion
+
+        py2_reqs_path = self.get_requirements_file(PythonVersion.PYTHON2)
+        py3_reqs_path = self.get_requirements_file(PythonVersion.PYTHON3)
+        py_reqs = ExtendedMacroRequirements(py_ver, py2_reqs_path, py3_reqs_path)
+        req_installer = PythonDependencyInstaller(
+            python_version = py_ver,
+            python_executable_path = py_exec,
+            requirements = py_reqs
+        )
+        req_installer.InstallRequirements()
+        return
+
+    def get_requirements_file(self, python_version):
+        script_path = os.path.normpath(os.path.dirname(__file__))
+        reqs_path = os.path.join(script_path, os.path.pardir, 'extended_macro', 'requirements')
+        reqs_path = os.path.normpath(reqs_path)
+        if python_version == PythonVersion.PYTHON2:
+            result = os.path.join(reqs_path,'requirements-python2.txt')
+        else:
+            result = os.path.join(reqs_path,'requirements-python3.txt')
+        return result
+
+    def AddMoonrakerUpdater(self):
+        script_path = os.path.normpath(os.path.dirname(__file__))
+        updater_path = os.path.join(script_path, os.path.pardir, 'extended_macro', 'extended_macro_updater.conf')
+
+        script_path = os.path.normpath(os.path.dirname(__file__))
+        reqs_path = os.path.join('extended_macro', 'requirements')
+
+        if self.Config.PythonVersion == PythonVersion.PYTHON2:
+            reqs_path = os.path.join(reqs_path, 'requirements-python2.txt')
+        elif self.Config.PythonVersion == PythonVersion.PYTHON3:
+            reqs_path = os.path.join(reqs_path, 'requirements-python3.txt')
+
+        with open(updater_path, 'r') as f:
+            lines = f.readlines()
+
+        req_string = '\nrequirements: %s' % reqs_path
+        lines.append(req_string)
+        self.Config.UpdateMoonrakerConfig(lines)
 
     def SettingsMenu(self):
         self._clear_screen()
