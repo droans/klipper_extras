@@ -99,6 +99,24 @@ class Config(object):
             raise FileNotFoundError()
         return result
 
+    @property
+    def UpdateManagerExists(self):
+        result = False
+
+        server_conf = self._config.get('server', {})
+        conf = server_conf.get('config', {})
+        conf_keys = conf.keys()
+        conf_keys = list(conf_keys)
+        updater_keys = [key for key in conf_keys if 'update_manager' in key]
+
+        for key in updater_keys:
+            updater_conf = conf.get(key, {})
+            repo_origin = updater_conf.get('origin', None)
+
+            if repo_origin == 'https://github.com/droans/klipper_extras.git':
+                result = True
+        return result
+
     def UpdateMoonrakerConfig(self, update_list):
         fname = self.MoonrakerConfPath
         with open(fname, 'r') as f:

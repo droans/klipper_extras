@@ -175,13 +175,14 @@ class Installer():
             value = self.Config.ExtrasDir
         )
         f.ProcessFiles()
-
         self._clear_screen()
         self.screen_template("Install Finished!")
-        result = Input('Would you like to set up Moonraker updates? Y/n ')
-
-        if result.lower() == 'y':
-            self.AddMoonrakerUpdater()
+        if not self.Config.UpdateManagerExists:
+            result = Input('Would you like to set up Moonraker updates? Y/n ')
+            if result.lower() == 'y':
+                self.AddMoonrakerUpdater()
+        else:
+            Input('Type enter to continue.')
 
         self.MainMenu()
 
