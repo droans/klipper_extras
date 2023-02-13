@@ -6,7 +6,7 @@ import subprocess
 from utils.enums import PythonVersion
 from utils.install_dependencies import PythonDependencyInstaller
 from utils.helpers import Input, GetPythonVersion
-from utils.custom.install_reqs import InstallerRequirements
+from utils.custom.installer import InstallerRequirements
 from utils.custom.extended_macro import ExtendedMacroRequirements, ExtendedMacroFiles
 from utils.enums import FileActions
 from utils.moonraker import Moonraker
