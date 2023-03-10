@@ -1,6 +1,6 @@
 import os
-from .enums import PythonVersion
-from .helpers import GetPythonVersion
+from utils.enums import PythonVersion
+from utils.helpers import GetPythonVersion
 
 class Config(object):
     def __init__(self, config={}):

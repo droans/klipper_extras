@@ -1,8 +1,9 @@
 import subprocess
 import os
 import sys
-from .enums import PythonVersion
-from .custom.constructors import RequirementsConstructor
+from utils.enums import PythonVersion
+from utils.custom.constructors import RequirementsConstructor
+from utils.helpers import Input
 
 class PythonDependencyInstaller(object):
     def __init__(self, requirements, python_version = None, python_executable_path = None):

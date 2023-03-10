@@ -1,5 +1,5 @@
-from .constructors import RequirementsConstructor
-from ..enums import PythonVersion
+from utils.custom.constructors import RequirementsConstructor
+from utils.enums import PythonVersion
 
 class InstallerRequirements(RequirementsConstructor):
     def __init__(self, python_version):

@@ -1,5 +1,5 @@
-from .constructors import RequirementsConstructor, FileConstructor, FilesConstructor
-from ..enums import FileActions, PythonVersion
+from utils.custom.constructors import RequirementsConstructor, FileConstructor, FilesConstructor
+from utils.enums import FileActions, PythonVersion
 class ExtendedMacroRequirements(RequirementsConstructor):
     def __init__(self, python_version, python2_requirements_file_path, python3_requirements_file_path):
         if python_version == PythonVersion.PYTHON2:

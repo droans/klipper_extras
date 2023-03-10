@@ -1,5 +1,5 @@
-from ..enums import PythonVersion, FileActions
-from ..helpers import Input
+from utils.enums import PythonVersion, FileActions
+from utils.helpers import Input
 import os
 import sys
 import shutil

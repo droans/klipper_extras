@@ -1,6 +1,6 @@
 import sys
 import subprocess
-from .enums import PythonVersion
+from utils.enums import PythonVersion
 
 def GetPythonVersion(python_binary=None):
     if python_binary is None:
