@@ -9,7 +9,7 @@ class ExtendedMacroRequirements(RequirementsConstructor):
 
         self._python_2_mods = self._get_reqs_from_file(python2_requirements_file_path)
         self._python_3_mods = self._get_reqs_from_file(python3_requirements_file_path)
-        self._python_3_apt = []
+        self._python_3_apt = ['libatlas-base-dev']
         self._python_2_apt = []
 
     @property
