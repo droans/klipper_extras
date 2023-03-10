@@ -189,9 +189,7 @@ class Installer():
         return
     
     def AddMoonrakerUpdater(self):
-        script_path = os.path.normpath(os.path.dirname(__file__))
         updater_path = os.path.join(script_path, os.path.pardir, 'extended_macro', 'extended_macro_updater.conf')
-
         script_path = os.path.normpath(os.path.dirname(__file__))
         reqs_path = os.path.join('extended_macro', 'requirements')
 
@@ -340,4 +338,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
