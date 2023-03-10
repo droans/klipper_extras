@@ -330,10 +330,13 @@ def check_installer_requirements():
         req_installer.InstallRequirements()
         sys.exit()
 
-def main():
+def install_extras():
     check_installer_requirements()
     installer = Installer()
     installer.MainMenu()
+
+def main():
+    install_extras()
 
 if __name__ == '__main__':
     main()
