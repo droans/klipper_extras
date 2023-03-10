@@ -5,7 +5,7 @@ from utils.enums import PythonVersion
 from utils.custom.constructors import RequirementsConstructor
 from utils.helpers import Input
 
-class PythonDependencyInstaller(object):
+class DependencyInstaller(object):
     def __init__(self, requirements, python_version = None, python_executable_path = None):
         if python_executable_path is None:
             self._python_exec= os.sys.executable
@@ -50,9 +50,29 @@ class PythonDependencyInstaller(object):
         self._requirements = requirements
 
     def InstallRequirements(self):
+        self.InstallAptRequirements()
+        self.InstallPythonRequirements()
+
+    def InstallAptRequirements(self):
+        requirements = self._requirements.Apt
+        install_command = []
+        if len(requirements):
+            print('System package requirements are about to be installed. You may be required to input the root password.')
+            print('If you do NOT want to run this as root, type \'N\' below. Otherwise, press enter.')
+            result = Input()
+            if result.lower() != 'n':
+                install_command.append('sudo')
+            install_command += ['apt','install'] + requirements + ['-y']
+            print('Installing %s...' % ', '.join(requirements))
+            print(' '.join(install_command))
+            subprocess.call(install_command)
+        return
+
+    def InstallPythonRequirements(self):
         requirements = self._requirements.Python
         install_command = [self._python_exec, '-m', 'pip', 'install'] + requirements
         print('Installing %s...' % ', '.join(requirements))
+        print(' '.join(install_command))
         subprocess.call(install_command)
 
     def SaveRequirementsToFile(self, path):

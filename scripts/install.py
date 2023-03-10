@@ -4,7 +4,7 @@ import json
 import subprocess
 
 from utils.enums import PythonVersion
-from utils.install_dependencies import PythonDependencyInstaller
+from utils.install_dependencies import DependencyInstaller
 from utils.helpers import Input, GetPythonVersion
 from utils.custom.installer import InstallerRequirements
 from utils.custom.extended_macro import ExtendedMacroRequirements, ExtendedMacroFiles
@@ -143,7 +143,7 @@ class Installer():
         py2_reqs_path = self.get_requirements_file(PythonVersion.PYTHON2)
         py3_reqs_path = self.get_requirements_file(PythonVersion.PYTHON3)
         py_reqs = ExtendedMacroRequirements(py_ver, py2_reqs_path, py3_reqs_path)
-        req_installer = PythonDependencyInstaller(
+        req_installer = DependencyInstaller(
             python_version = py_ver,
             python_executable_path = py_exec,
             requirements = py_reqs
@@ -323,7 +323,7 @@ def check_installer_requirements():
         py_exec = python_executable()
         py_ver = GetPythonVersion()
         py_reqs = InstallerRequirements(py_ver)
-        req_installer = PythonDependencyInstaller(
+        req_installer = DependencyInstaller(
             python_executable_path = py_exec,
             requirements = py_reqs
         )
